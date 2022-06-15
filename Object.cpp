@@ -101,6 +101,7 @@ void engine::Polygon::UpdateVertixes()
     for (auto& vertix : vertixes_) {
         vertix.x = transform_.Position.x + vertix.x * DEFAULT_SCALE * transform_.Scale.x;
         vertix.y = transform_.Position.y + vertix.y * DEFAULT_SCALE * transform_.Scale.x;
+        vertix = ToScreenPoint(vertix);
     }
 }
 

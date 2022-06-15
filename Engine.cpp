@@ -9,7 +9,7 @@ void Engine::Awake()
 
 void Engine::Start()
 {
-	auto circle = CreateObject(Circle(Vector2f(), 0.3f, Color(255, 255, 255)));
+	auto circle = CreateObject(Circle(Vector2f(), 800.0f, Color(255, 255, 255)));
 }
 
 void Engine::Update()

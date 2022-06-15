@@ -43,15 +43,15 @@ namespace engine {
 	public:
 		Triangle(Vector2f&& position, Vector2f scale, Vector2f&& point1, Vector2f&& point2, Vector2f&& point3) :
 			Object(std::move(position), std::move(scale)) {
-			points_[0] = std::move(point1);
-			points_[1] = std::move(point2);
-			points_[2] = std::move(point3);
+			points_[0] = ToScreenPoint(std::move(point1));
+			points_[1] = ToScreenPoint(std::move(point2));
+			points_[2] = ToScreenPoint(std::move(point3));
 		}
 		Triangle(Vector2f&& position, Vector2f scale, Vector2f&& point1, Vector2f&& point2, Vector2f&& point3, Color&& color) :
 			Object(std::move(position), std::move(scale), std::move(color)) {
-			points_[0] = std::move(point1);
-			points_[1] = std::move(point2);
-			points_[2] = std::move(point3);
+			points_[0] = ToScreenPoint(std::move(point1));
+			points_[1] = ToScreenPoint(std::move(point2));
+			points_[2] = ToScreenPoint(std::move(point3));
 		}
 	public:
 		std::array<Vector2f, 3> GetPoints() const;
@@ -78,9 +78,9 @@ namespace engine {
 		Vector2f point_;
 	public:
 		Line(Vector2f&& position, Vector2f&& point) :
-			Object(std::move(position), {}), point_(std::move(point)) {}
+			Object(std::move(position), {}), point_(ToScreenPoint(std::move(point))) {}
 		Line(Vector2f&& position, Vector2f&& point, Color&& color) :
-			Object(std::move(position), {}, std::move(color)), point_(std::move(point)) {}
+			Object(std::move(position), {}, std::move(color)), point_(ToScreenPoint(std::move(point))) {}
 	public:
 		void SetScale(Vector2f&& size) override;
 	public:

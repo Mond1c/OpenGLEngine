@@ -1,4 +1,6 @@
 #pragma once
+#include "Settings.h"
+
 #include <numeric>
 #include <cmath>
 
@@ -30,4 +32,14 @@ namespace engine {
 		Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) :
 			r(r), g(g), b(b), a(a) {}
 	};
+
+	template<typename T>
+	Vector2<T> ToScreenPoint(const Vector2<T>& point) {
+		return { point.x / WIDTH, point.y / HEIGHT };
+	}
+
+	template<typename T>
+	Vector2<T> ToWorldPoint(const Vector2<T>& point) {
+		return { point.x * WIDTH, point.y * HEIGHT };
+	}
 }
