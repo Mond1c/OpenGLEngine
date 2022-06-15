@@ -1,5 +1,6 @@
 #pragma once
 #include <numeric>
+#include <cmath>
 
 namespace engine {
 	template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
@@ -8,6 +9,10 @@ namespace engine {
 		T y;
 		Vector2() : x(0), y(0) {}
 		Vector2(T x, T y) : x(x), y(y) {}
+
+		T Magnitude() {
+			return static_cast<T>(std::sqrt(x * x + y * y));
+		}
 	};
 
 	typedef Vector2<int> Vector2i;

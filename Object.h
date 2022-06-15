@@ -1,21 +1,19 @@
 #pragma once
-#include "Utility.h"
+#include "Transform.h"
 #include <GLFW/glfw3.h>
 #include <array>
+#include <vector>
 
 namespace engine {
 	class Object {
 	protected:
-		Vector2f position_;
-		Vector2f scale_;
+		Transform transform_;
 		Color color_{};
 	public:
 		Object(Vector2f&& position, Vector2f&& scale) :
-			position_(position),
-			scale_(scale) {}
+			transform_(std::move(position), std::move(scale)) {}
 		Object(Vector2f&& position, Vector2f&& scale, Color&& color) :
-			position_(position),
-			scale_(scale),
+			transform_(std::move(position), std::move(scale)),
 			color_(color) {}
 	public:
 		virtual Vector2f GetPosition() const;
@@ -71,6 +69,48 @@ namespace engine {
 			Object(std::move(position), {}, std::move(color)) {}
 	public:
 		void SetScale(Vector2f&& size) override;
+	public:
+		void Draw() const override;
+	};
+
+	class Line : public Object {
+	private:
+		Vector2f point_;
+	public:
+		Line(Vector2f&& position, Vector2f&& point) :
+			Object(std::move(position), {}), point_(std::move(point)) {}
+		Line(Vector2f&& position, Vector2f&& point, Color&& color) :
+			Object(std::move(position), {}, std::move(color)), point_(std::move(point)) {}
+	public:
+		void SetScale(Vector2f&& size) override;
+	public:
+		void Draw() const override;
+	};
+
+	class Polygon : public Object {
+	private:
+		std::vector<Vector2f> vertixes_;
+	private:
+		void UpdateVertixes();
+	public:
+		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f> vertices) :
+			Object(std::move(position), std::move(scale)), vertixes_(std::move(vertices)) {
+			UpdateVertixes();
+		}
+		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f> vertices, Color&& color) :
+			Object(std::move(position), std::move(scale), std::move(color)), vertixes_(std::move(vertices)) {
+			UpdateVertixes();
+		}
+	public:
+		void Draw() const override;
+	};
+
+	class Circle : public Object {
+	public:
+		Circle(Vector2f&& position, float radius) :
+			Object(std::move(position), {radius, radius}) {}
+		Circle(Vector2f&& position, float radius, Color&& color) :
+			Object(std::move(position), { radius, radius }, std::move(color)) {}
 	public:
 		void Draw() const override;
 	};

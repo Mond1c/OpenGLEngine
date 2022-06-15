@@ -15,7 +15,16 @@ namespace engine {
 				throw std::exception("Can't create a window");
 			}
 			glfwMakeContextCurrent(window);
+			glViewport(0.0f, 0.0f, width, height);
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
 		}
+	public:
+		Window(Window&) = delete;
+		Window(Window&&) = delete;
+	public:
+		Window& operator=(Window&) = delete;
+		Window& operator=(Window&&) = delete;
 	public:
 		bool ShouldClose();
 		// In the future I will change the name to "Update" (maybe)

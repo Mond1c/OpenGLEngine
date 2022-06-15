@@ -28,6 +28,10 @@ private:
 		objects.push_back(obj);
 		return obj;
 	}
+
+	void CreateWindow(int width, int height, const char* title) {
+		window = std::make_unique<engine::Window>(width, height, title);
+	}
 public:
 	void Draw() {
 		for (const auto& obj : objects) {
