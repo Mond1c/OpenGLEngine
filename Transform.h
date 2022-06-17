@@ -9,7 +9,7 @@ namespace engine {
 		Vector2f Scale;
 	public:
 		Transform(Vector2f&& position, Vector2f&& scale) :
-			Position(ToScreenPoint(position)), Scale(ToScreenPoint(scale)) {}
+			Position(ToScreenPoint(position)), Scale(scale) {}
 	};
 }
 

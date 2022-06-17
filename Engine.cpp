@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Physics.h"
 #include <memory>
 using namespace engine;
 
@@ -9,7 +10,8 @@ void Engine::Awake()
 
 void Engine::Start()
 {
-	auto circle = CreateObject(Circle(Vector2f(), 800.0f, Color(255, 255, 255)));
+	auto circle = CreateObject(Circle(Vector2f(), 100, Color(255, 255, 255)));
+	circle->AddComponent(std::make_shared<Physics>(circle->GetTransform()));
 }
 
 void Engine::Update()

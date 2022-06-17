@@ -1,29 +1,35 @@
 #pragma once
+#include "IComponent.h"
 #include "Transform.h"
 #include <GLFW/glfw3.h>
 #include <array>
 #include <vector>
+#include <memory>
 
 namespace engine {
 	class Object {
 	protected:
-		Transform transform_;
+		std::shared_ptr<Transform> transform_;
+		std::vector<std::shared_ptr<IComponent>> components_;
 		Color color_{};
 	public:
 		Object(Vector2f&& position, Vector2f&& scale) :
-			transform_(std::move(position), std::move(scale)) {}
+			transform_(std::make_shared<Transform>(std::move(position), std::move(scale))) {}
 		Object(Vector2f&& position, Vector2f&& scale, Color&& color) :
-			transform_(std::move(position), std::move(scale)),
+			transform_(std::make_shared<Transform>(std::move(position), std::move(scale))),
 			color_(color) {}
 	public:
 		virtual Vector2f GetPosition() const;
 		virtual Vector2f GetSize() const;
 		Color GetColor() const;
+		std::shared_ptr<Transform>& GetTransform();
 	public:
 		virtual void SetPosition(Vector2f&& position);
 		virtual void SetScale(Vector2f&& size);
 		void SetColor(Color&& color);
 	public:
+		void AddComponent(std::shared_ptr<IComponent> component);
+		void Update();
 		virtual void Draw() const = 0;
 	};
 
@@ -93,12 +99,12 @@ namespace engine {
 	private:
 		void UpdateVertixes();
 	public:
-		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f> vertices) :
-			Object(std::move(position), std::move(scale)), vertixes_(std::move(vertices)) {
+		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f>&& vertixes) :
+			Object(std::move(position), std::move(scale)), vertixes_(std::move(vertixes)) {
 			UpdateVertixes();
 		}
-		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f> vertices, Color&& color) :
-			Object(std::move(position), std::move(scale), std::move(color)), vertixes_(std::move(vertices)) {
+		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f>&& vertixes, Color&& color) :
+			Object(std::move(position), std::move(scale), std::move(color)), vertixes_(std::move(vertixes)) {
 			UpdateVertixes();
 		}
 	public:
@@ -108,9 +114,9 @@ namespace engine {
 	class Circle : public Object {
 	public:
 		Circle(Vector2f&& position, float radius) :
-			Object(std::move(position), {radius, radius}) {}
+			Object(std::move(position), std::move(ToScreenPoint<float>({ radius, radius }))) {}
 		Circle(Vector2f&& position, float radius, Color&& color) :
-			Object(std::move(position), { radius, radius }, std::move(color)) {}
+			Object(std::move(position), std::move(ToScreenPoint<float>({ radius, radius })), std::move(color)) {}
 	public:
 		void Draw() const override;
 	};
