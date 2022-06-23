@@ -32,7 +32,7 @@ namespace engine {
 		void Update();
 		virtual void Draw() const = 0;
 	};
-
+	
 	class Rectangle : public Object {
 	public:
 		Rectangle(const Vector2f& position, const Vector2f& size) :
@@ -47,15 +47,16 @@ namespace engine {
 	private:
 		std::array<Vector2f, 3> points_;
 	public:
-		Triangle(const Vector2f& position, const Vector2f& scale, const Vector2f& point1, const Vector2f& point2, const Vector2f& point3) :
+		Triangle(const Vector2f& position, const Vector2f& scale, const Vector2f& point1, const Vector2f& point2,
+		 const Vector2f& point3) :
 			Object(position, scale) {
-			points_[0] = ToScreenPoint(point1);
-			points_[1] = ToScreenPoint(point2);
-			points_[2] = ToScreenPoint(point3);
+				points_[0] = ToScreenPoint(point1);
+				points_[1] = ToScreenPoint(point2);
+				points_[2] = ToScreenPoint(point3);
 		}
 		Triangle(const Vector2f& position, const Vector2f& scale, const Vector2f& point1, const Vector2f& point2,
 			const Vector2f& point3, const Color& color) :
-				Object(std::move(position), std::move(scale), std::move(color)) {
+				Object(position, scale, color) {
 				points_[0] = ToScreenPoint(point1);
 				points_[1] = ToScreenPoint(point2);
 				points_[2] = ToScreenPoint(point3);

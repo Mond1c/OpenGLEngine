@@ -1,6 +1,4 @@
 ﻿#include "Engine.h"
-
-#include <memory>
 using namespace engine;
 
 int main(void)
