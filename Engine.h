@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Settings.h"
 #include "Utility.h"
 #include "Object.h"
 #include <memory>
@@ -32,7 +33,6 @@ private:
 	void CreateWindow(int width, int height, const char* title) {
 		window = std::make_unique<engine::Window>(width, height, title);
 	}
-
 public:
 	void Draw() {
 		for (const auto& obj : objects) {

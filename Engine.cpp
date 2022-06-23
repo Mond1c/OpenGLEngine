@@ -10,8 +10,10 @@ void Engine::Awake()
 
 void Engine::Start()
 {
-	auto circle = CreateObject(Circle(Vector2f(), 100, Color(255, 255, 255)));
-	circle->AddComponent(std::make_shared<Physics>(circle->GetTransform()));
+	auto rect = CreateObject(Rectangle(Vector2f(), Vector2f(0.1, 0.1), Color::White));
+	auto otherRect = CreateObject(Rectangle(Vector2f(0, -300), Vector2f(0.1, 0.1), Color::White));
+	rect->AddComponent(std::make_shared<Components::Physics>(rect->GetTransform()));
+	auto vec = engine::Vector2f::Zero;
 }
 
 void Engine::Update()

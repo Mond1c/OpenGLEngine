@@ -8,7 +8,7 @@ namespace engine {
 		Vector2f Position;
 		Vector2f Scale;
 	public:
-		Transform(Vector2f&& position, Vector2f&& scale) :
+		Transform(const Vector2f& position, const Vector2f& scale) :
 			Position(ToScreenPoint(position)), Scale(scale) {}
 	};
 }

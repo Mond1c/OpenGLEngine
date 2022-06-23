@@ -13,10 +13,10 @@ namespace engine {
 		std::vector<std::shared_ptr<IComponent>> components_;
 		Color color_{};
 	public:
-		Object(Vector2f&& position, Vector2f&& scale) :
-			transform_(std::make_shared<Transform>(std::move(position), std::move(scale))) {}
-		Object(Vector2f&& position, Vector2f&& scale, Color&& color) :
-			transform_(std::make_shared<Transform>(std::move(position), std::move(scale))),
+		Object(const Vector2f& position, const Vector2f& scale) :
+			transform_(std::make_shared<Transform>(position, scale)) {}
+		Object(const Vector2f& position, const Vector2f& scale, const Color& color) :
+			transform_(std::make_shared<Transform>(position, scale)),
 			color_(color) {}
 	public:
 		virtual Vector2f GetPosition() const;
@@ -24,9 +24,9 @@ namespace engine {
 		Color GetColor() const;
 		std::shared_ptr<Transform>& GetTransform();
 	public:
-		virtual void SetPosition(Vector2f&& position);
-		virtual void SetScale(Vector2f&& size);
-		void SetColor(Color&& color);
+		virtual void SetPosition(const Vector2f& position);
+		virtual void SetScale(const Vector2f& size);
+		void SetColor(const Color& color);
 	public:
 		void AddComponent(std::shared_ptr<IComponent> component);
 		void Update();
@@ -35,10 +35,10 @@ namespace engine {
 
 	class Rectangle : public Object {
 	public:
-		Rectangle(Vector2f&& position, Vector2f&& size) :
-			Object(std::move(position), std::move(size)) {}
-		Rectangle(Vector2f&& position, Vector2f&& size, Color&& color) :
-			Object(std::move(position), std::move(size), std::move(color)) {}
+		Rectangle(const Vector2f& position, const Vector2f& size) :
+			Object(position, size) {}
+		Rectangle(const Vector2f& position, const Vector2f& size, const Color& color) :
+			Object(position, size, color) {}
 	public:
 		void Draw() const override;
 	};
@@ -47,34 +47,35 @@ namespace engine {
 	private:
 		std::array<Vector2f, 3> points_;
 	public:
-		Triangle(Vector2f&& position, Vector2f scale, Vector2f&& point1, Vector2f&& point2, Vector2f&& point3) :
-			Object(std::move(position), std::move(scale)) {
-			points_[0] = ToScreenPoint(std::move(point1));
-			points_[1] = ToScreenPoint(std::move(point2));
-			points_[2] = ToScreenPoint(std::move(point3));
+		Triangle(const Vector2f& position, const Vector2f& scale, const Vector2f& point1, const Vector2f& point2, const Vector2f& point3) :
+			Object(position, scale) {
+			points_[0] = ToScreenPoint(point1);
+			points_[1] = ToScreenPoint(point2);
+			points_[2] = ToScreenPoint(point3);
 		}
-		Triangle(Vector2f&& position, Vector2f scale, Vector2f&& point1, Vector2f&& point2, Vector2f&& point3, Color&& color) :
-			Object(std::move(position), std::move(scale), std::move(color)) {
-			points_[0] = ToScreenPoint(std::move(point1));
-			points_[1] = ToScreenPoint(std::move(point2));
-			points_[2] = ToScreenPoint(std::move(point3));
+		Triangle(const Vector2f& position, const Vector2f& scale, const Vector2f& point1, const Vector2f& point2,
+			const Vector2f& point3, const Color& color) :
+				Object(std::move(position), std::move(scale), std::move(color)) {
+				points_[0] = ToScreenPoint(point1);
+				points_[1] = ToScreenPoint(point2);
+				points_[2] = ToScreenPoint(point3);
 		}
 	public:
 		std::array<Vector2f, 3> GetPoints() const;
 	public:
-		void SetPoints(std::array<Vector2f, 3>&& points);
+		void SetPoints(const std::array<Vector2f, 3>& points);
 	public:
 		void Draw() const override;
 	};
 
 	class Point : public Object {
 	public:
-		Point(Vector2f&& position) :
-			Object(std::move(position), {}) {}
-		Point(Vector2f&& position, Color&& color) :
-			Object(std::move(position), {}, std::move(color)) {}
+		Point(const Vector2f& position) :
+			Object(position, {}) {}
+		Point(const Vector2f& position, const Color& color) :
+			Object(position, {}, color) {}
 	public:
-		void SetScale(Vector2f&& size) override;
+		void SetScale(const Vector2f& size) override;
 	public:
 		void Draw() const override;
 	};
@@ -83,29 +84,29 @@ namespace engine {
 	private:
 		Vector2f point_;
 	public:
-		Line(Vector2f&& position, Vector2f&& point) :
-			Object(std::move(position), {}), point_(ToScreenPoint(std::move(point))) {}
-		Line(Vector2f&& position, Vector2f&& point, Color&& color) :
-			Object(std::move(position), {}, std::move(color)), point_(ToScreenPoint(std::move(point))) {}
+		Line(const Vector2f& position, const Vector2f& point) :
+			Object(position, {}), point_(ToScreenPoint(point)) {}
+		Line(const Vector2f& position, const Vector2f& point, const Color& color) :
+			Object(position, {}, color), point_(ToScreenPoint(point)) {}
 	public:
-		void SetScale(Vector2f&& size) override;
+		void SetScale(const Vector2f& size) override;
 	public:
 		void Draw() const override;
 	};
 
 	class Polygon : public Object {
 	private:
-		std::vector<Vector2f> vertixes_;
+		std::vector<Vector2f> vertices_;
 	private:
-		void UpdateVertixes();
+		void UpdateVertices();
 	public:
-		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f>&& vertixes) :
-			Object(std::move(position), std::move(scale)), vertixes_(std::move(vertixes)) {
-			UpdateVertixes();
+		Polygon(const Vector2f& position, const Vector2f& scale, const std::vector<Vector2f>& vertices) :
+			Object(position, scale), vertices_(vertices) {
+			UpdateVertices();
 		}
-		Polygon(Vector2f&& position, Vector2f scale, std::vector<Vector2f>&& vertixes, Color&& color) :
-			Object(std::move(position), std::move(scale), std::move(color)), vertixes_(std::move(vertixes)) {
-			UpdateVertixes();
+		Polygon(const Vector2f& position, const Vector2f& scale, const std::vector<Vector2f>& vertices, const Color& color) :
+			Object(position, scale, color), vertices_(vertices_) {
+			UpdateVertices();
 		}
 	public:
 		void Draw() const override;
@@ -113,10 +114,10 @@ namespace engine {
 
 	class Circle : public Object {
 	public:
-		Circle(Vector2f&& position, float radius) :
-			Object(std::move(position), std::move(ToScreenPoint<float>({ radius, radius }))) {}
-		Circle(Vector2f&& position, float radius, Color&& color) :
-			Object(std::move(position), std::move(ToScreenPoint<float>({ radius, radius })), std::move(color)) {}
+		Circle(const Vector2f& position, float radius) :
+			Object(position, ToScreenPoint<float>({ radius, radius })) {}
+		Circle(const Vector2f& position, float radius, const Color& color) :
+			Object(position, ToScreenPoint<float>({ radius, radius }), color) {}
 	public:
 		void Draw() const override;
 	};

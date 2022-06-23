@@ -24,16 +24,16 @@ std::shared_ptr<Transform>& engine::Object::GetTransform()
     return transform_;
 }
 
-void Object::SetPosition(Vector2f&& position) {
-    transform_->Position = std::move(position);
+void Object::SetPosition(const Vector2f& position) {
+    transform_->Position = position;
 }
 
-void Object::SetScale(Vector2f&& scale) {
-    transform_->Scale = std::move(scale);
+void Object::SetScale(const Vector2f& scale) {
+    transform_->Scale = scale;
 }
 
-void Object::SetColor(Color&& color) {
-    color_ = std::move(color);
+void Object::SetColor(const Color& color) {
+    color_ = color;
 }
 
 void engine::Object::AddComponent(std::shared_ptr<IComponent> component)
@@ -65,9 +65,9 @@ std::array<Vector2f, 3> engine::Triangle::GetPoints() const
     return points_;
 }
 
-void Triangle::SetPoints(std::array<Vector2f, 3>&& points)
+void Triangle::SetPoints(const std::array<Vector2f, 3>& points)
 {
-    points_ = std::move(points);
+    points_ = points;
 }
 
 void Triangle::Draw() const {
@@ -82,7 +82,7 @@ void Triangle::Draw() const {
     glEnd();
 }
 
-void Point::SetScale(Vector2f&& scale)
+void Point::SetScale(const Vector2f& scale)
 {
     printf("You can't use this method with point (SetSize)");
     throw std::runtime_error("You can't use this method with point");
@@ -96,7 +96,7 @@ void Point::Draw() const
     glEnd();
 }
 
-void engine::Line::SetScale(Vector2f&& size)
+void engine::Line::SetScale(const Vector2f& size)
 {
     printf("You can't use this method with line (SetSize)");
     throw std::runtime_error("You can't use this method with line");
@@ -111,9 +111,9 @@ void engine::Line::Draw() const
     glEnd();
 }
 
-void engine::Polygon::UpdateVertixes()
+void engine::Polygon::UpdateVertices()
 {
-    for (auto& vertex : vertixes_) {
+    for (auto& vertex : vertices_) {
         vertex.x = transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x;
         vertex.y = transform_->Position.y + vertex.y * DEFAULT_SCALE * transform_->Scale.x;
     }
@@ -123,8 +123,8 @@ void engine::Polygon::Draw() const
 {
     glEnableClientState(GL_VERTEX_ARRAY);
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
-    glVertexPointer(2, GL_FLOAT, 0, vertixes_.data());
-    glDrawArrays(GL_POLYGON, 0, vertixes_.size());
+    glVertexPointer(2, GL_FLOAT, 0, vertices_.data());
+    glDrawArrays(GL_POLYGON, 0, vertices_.size());
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
