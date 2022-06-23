@@ -2,6 +2,7 @@
 #include "Settings.h"
 #include "Utility.h"
 #include "Object.h"
+#include "ICollider.h"
 #include <memory>
 #include <vector>
 
@@ -28,6 +29,16 @@ private:
 		std::shared_ptr<T> obj = std::make_shared<T>(std::move(tmp));
 		objects.push_back(obj);
 		return obj;
+	}
+
+	template<typename T, typename G,
+		typename = std::enable_if<std::is_base_of<Components::ICollider, T>::value>::type,
+		typename = std::enable_if<std::is_base_of<Object, G>::value>::type>
+	std::shared_ptr<T> CreateCollider(std::shared_ptr<G>& object) {
+		std::shared_ptr<T> collider = std::make_shared<T>(object->GetTransform());
+		object->AddComponent(collider);
+		engine::Components::ALL_COLLIDERS.push_back(collider);
+		return collider;
 	}
 
 	void CreateWindow(int width, int height, const char* title) {

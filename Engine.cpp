@@ -13,10 +13,9 @@ void Engine::Start()
 {
 	auto rect = CreateObject(Rectangle(Vector2f(), Vector2f(0.1, 0.1), Color::White));
 	auto otherRect = CreateObject(Rectangle(Vector2f(0, -300), Vector2f(0.1, 0.1), Color::White));
-	rect->AddComponent(std::make_shared<Components::Physics>(rect->GetTransform()));
-	rect->AddComponent(std::make_shared<Components::Colliders::Box>(rect->GetTransform()));
-	otherRect->AddComponent(std::make_shared<Components::Colliders::Box>(otherRect->GetTransform()));
-	auto vec = engine::Vector2f::Zero;
+	rect->AddComponent(std::make_shared<engine::Components::Physics>(rect->GetTransform()));
+	auto a = CreateCollider<engine::Components::Colliders::Box>(rect);
+	auto b = CreateCollider<engine::Components::Colliders::Box>(otherRect);
 }
 
 void Engine::Update()

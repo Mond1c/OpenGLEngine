@@ -18,6 +18,7 @@ namespace engine {
 		Object(const Vector2f& position, const Vector2f& scale, const Color& color) :
 			transform_(std::make_shared<Transform>(position, scale)),
 			color_(color) {}
+		virtual ~Object() = default;
 	public:
 		virtual Vector2f GetPosition() const;
 		virtual Vector2f GetSize() const;
@@ -39,6 +40,7 @@ namespace engine {
 			Object(position, size) {}
 		Rectangle(const Vector2f& position, const Vector2f& size, const Color& color) :
 			Object(position, size, color) {}
+		~Rectangle() override = default;
 	public:
 		void Draw() const override;
 	};
@@ -61,6 +63,7 @@ namespace engine {
 				points_[1] = ToScreenPoint(point2);
 				points_[2] = ToScreenPoint(point3);
 		}
+		~Triangle() override = default;
 	public:
 		std::array<Vector2f, 3> GetPoints() const;
 	public:
@@ -75,6 +78,7 @@ namespace engine {
 			Object(position, {}) {}
 		Point(const Vector2f& position, const Color& color) :
 			Object(position, {}, color) {}
+		~Point() override = default;
 	public:
 		void SetScale(const Vector2f& size) override;
 	public:
@@ -89,6 +93,7 @@ namespace engine {
 			Object(position, {}), point_(ToScreenPoint(point)) {}
 		Line(const Vector2f& position, const Vector2f& point, const Color& color) :
 			Object(position, {}, color), point_(ToScreenPoint(point)) {}
+		~Line() override = default;
 	public:
 		void SetScale(const Vector2f& size) override;
 	public:
@@ -109,6 +114,7 @@ namespace engine {
 			Object(position, scale, color), vertices_(vertices_) {
 			UpdateVertices();
 		}
+		~Polygon() override = default;
 	public:
 		void Draw() const override;
 	};
@@ -119,6 +125,7 @@ namespace engine {
 			Object(position, ToScreenPoint<float>({ radius, radius })) {}
 		Circle(const Vector2f& position, float radius, const Color& color) :
 			Object(position, ToScreenPoint<float>({ radius, radius }), color) {}
+		~Circle() override = default;
 	public:
 		void Draw() const override;
 	};

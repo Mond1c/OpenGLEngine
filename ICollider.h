@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 namespace engine {
-    namespace Components {        
+    namespace Components {   
         class ICollider : public IComponent
         {
         public:
@@ -19,12 +19,10 @@ namespace engine {
             virtual void Update() const override = 0;
         };
 
+        //std::unordered_map<ICollider*, std::shared_ptr<ICollider>> ALL_COLLISIONS;
+        inline std::vector<std::shared_ptr<ICollider>> ALL_COLLIDERS;
 
         namespace Colliders {
-            namespace {
-                static std::unordered_map<std::shared_ptr<ICollider>, std::shared_ptr<ICollider>> Collisions;
-                static std::vector<std::shared_ptr<ICollider>> Colliders;
-            }
             class Box : public ICollider {
             public:
                 Box(std::shared_ptr<Transform>& transform) :
@@ -36,11 +34,13 @@ namespace engine {
             };
 
             namespace {
-                inline bool DetectCollision(const ICollider const* obj1, const ICollider const* obj2) {
-                    return DetectCollision(obj1, obj2);
+                template< typename Child, typename Base>
+                inline bool InstanceOf(const Base* base) {
+                    return dynamic_cast<const Child*>(base) != nullptr;
                 }
 
-                inline bool DetectCollision(const Box const* obj1, const Box const* obj2) {
+
+                inline bool detect_collision(const Box* obj1, const Box* obj2) {
                     std::shared_ptr<Transform> t1 = obj1->transform_;
                     std::shared_ptr<Transform> t2 = obj2->transform_;
                     Vector2f s1 = ToWorldPoint(t1->Scale);
@@ -51,6 +51,12 @@ namespace engine {
                         p1.x + s1.x > p2.x &&
                         p1.y < p2.y + s2.y &&
                         s1.y + p1.y > p2.y;
+                }
+
+                inline bool DetectCollision(const ICollider* obj1, const ICollider* obj2) {
+                    if (InstanceOf<Box>(obj1) && InstanceOf<Box>(obj2))
+                        return detect_collision(dynamic_cast<const Box*>(obj1), dynamic_cast<const Box*>(obj2));
+                    return false;
                 }
             }
         }
