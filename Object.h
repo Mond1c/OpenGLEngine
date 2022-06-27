@@ -5,6 +5,7 @@
 #include <array>
 #include <vector>
 #include <memory>
+#include <sstream>
 
 namespace engine {
 	class GameObject {
@@ -24,6 +25,7 @@ namespace engine {
 		virtual Vector2f GetSize() const;
 		Color GetColor() const;
 		std::shared_ptr<Transform>& GetTransform();
+	public:
 		template<typename T, typename = typename std::enable_if<std::is_base_of<IComponent, T>::value>::type>
 		std::shared_ptr<T> GetComponent() {
 			for (auto& component : components_) {
@@ -38,7 +40,10 @@ namespace engine {
 	public:
 		void AddComponent(std::shared_ptr<IComponent> component);
 		void Update();
+	public:
 		virtual void Draw() const = 0;
+		virtual void StringToObject(std::stringstream& ss) = 0;
+		virtual std::string GetString() const = 0;
 	};
 	
 	class Rectangle : public GameObject {
@@ -50,6 +55,8 @@ namespace engine {
 		~Rectangle() override = default;
 	public:
 		void Draw() const override;
+		void StringToObject(std::stringstream& ss) override;
+		std::string GetString() const override;
 	};
 
 	class Triangle : public GameObject {
@@ -77,6 +84,8 @@ namespace engine {
 		void SetPoints(const std::array<Vector2f, 3>& points);
 	public:
 		void Draw() const override;
+		void StringToObject(std::stringstream& ss) override;
+		std::string GetString() const override;
 	};
 
 	class Point : public GameObject {
@@ -90,6 +99,8 @@ namespace engine {
 		void SetScale(const Vector2f& size) override;
 	public:
 		void Draw() const override;
+		void StringToObject(std::stringstream& ss) override;
+		std::string GetString() const override;
 	};
 
 	class Line : public GameObject {
@@ -105,6 +116,8 @@ namespace engine {
 		void SetScale(const Vector2f& size) override;
 	public:
 		void Draw() const override;
+		void StringToObject(std::stringstream& ss) override;
+		std::string GetString() const override;
 	};
 
 	class Polygon : public GameObject {
@@ -124,6 +137,8 @@ namespace engine {
 		~Polygon() override = default;
 	public:
 		void Draw() const override;
+		void StringToObject(std::stringstream& ss) override;
+		std::string GetString() const override;
 	};
 
 	class Circle : public GameObject {
@@ -135,5 +150,7 @@ namespace engine {
 		~Circle() override = default;
 	public:
 		void Draw() const override;
+		void StringToObject(std::stringstream& ss) override;
+		std::string GetString() const override;
 	};
 }

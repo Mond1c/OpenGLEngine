@@ -1,0 +1,6 @@
+type=circle
+position=0,0
+radius=50
+type=circle
+position=300,-300
+radius=50

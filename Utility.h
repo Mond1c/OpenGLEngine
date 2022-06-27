@@ -1,6 +1,7 @@
 #pragma once
 #include "Settings.h"
 #include <numeric>
+#include <string>
 #include <cmath>
 
 namespace engine {
@@ -60,6 +61,10 @@ namespace engine {
 	inline const Color Color::Green = Color(0, 255, 0);
 	inline const Color Color::Blue = Color(0, 0, 255);
 
+	inline Vector2f ParseVector2f(const std::string& x, const std::string& y) {
+		return Vector2f(std::stof(x), std::stof(y));
+	}
+
 	template<typename T>
 	inline Vector2<T> ToScreenPoint(const Vector2<T>& point) {
 		return { point.x / WIDTH, point.y / HEIGHT };
@@ -68,6 +73,11 @@ namespace engine {
 	template<typename T>
 	inline Vector2<T> ToWorldPoint(const Vector2<T>& point) {
 		return { point.x * WIDTH, point.y * HEIGHT };
+	}
+
+	inline std::string Vector2fToString(const Vector2f& vec) {
+		Vector2f v = ToWorldPoint(vec);
+		return std::to_string(v.x) + "," + std::to_string(v.y);
 	}
 
 	template<typename T>
