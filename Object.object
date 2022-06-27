@@ -1,6 +1,16 @@
 type=circle
 position=0,0
 radius=50
+color=255,255,255,255
 type=circle
 position=300,-300
 radius=50
+color=255,255,255,255
+type=polygon
+position=0,0
+scale=1,1
+vertex=-100,-100,
+vertex=-50,40
+vertex=0,100
+vertex=100,20
+color=255,255,255,255

@@ -19,8 +19,6 @@ void Engine::Start()
 	OBJECTS = file.Load();
 	auto circle1 = OBJECTS[0];
 	auto circle2 = OBJECTS[1];
-	circle1->SetColor(Color::White);
-	circle2->SetColor(Color::White);
 	circle1->AddComponent(std::make_shared<components::Physics>(circle1->GetTransform(), 5.0f));
 	circle2->AddComponent(std::make_shared<components::Physics>(circle2->GetTransform(), 2.0f));
 	circle1->GetComponent<components::Physics>()->SetVelocity({ 0.1f, -0.1f });

@@ -61,6 +61,15 @@ namespace engine {
 	inline const Color Color::Green = Color(0, 255, 0);
 	inline const Color Color::Blue = Color(0, 0, 255);
 
+	inline Color ParseColor(const std::string& r, const std::string& g, const std::string& b, const std::string& a) {
+		return Color(std::stoi(r), std::stoi(g), std::stoi(b), std::stoi(a));
+	}
+
+	inline std::string ColorToString(const Color& color) {
+		return std::to_string(color.r) + "," + std::to_string(color.g) + "," 
+			+ std::to_string(color.b) + "," + std::to_string(color.a);
+	}
+
 	inline Vector2f ParseVector2f(const std::string& x, const std::string& y) {
 		return Vector2f(std::stof(x), std::stof(y));
 	}
