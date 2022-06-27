@@ -1,6 +1,6 @@
 #pragma once
 #include "IComponent.h"
-#include "Object.h"
+#include "GameObject.h"
 #include "Physics.h"
 #include <iostream>
 #include <memory>

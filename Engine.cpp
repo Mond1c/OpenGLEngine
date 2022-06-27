@@ -27,6 +27,8 @@ void Engine::Start()
 	circle2->GetComponent<components::Physics>()->SetVelocity({ -0.1f, 0.1f });
 	CreateCollider<components::colliders::Circle>(circle1);
 	CreateCollider<components::colliders::Circle>(circle2);
+	file = File("test.object");
+	file.Save(OBJECTS);
 }
 
 void Engine::Update()

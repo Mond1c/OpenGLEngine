@@ -2,7 +2,7 @@
 #include "Window.h"
 #include "Settings.h"
 #include "Utility.h"
-#include "Object.h"
+#include "GameObject.h"
 #include "ICollider.h"
 #include <memory>
 #include <vector>

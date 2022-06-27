@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "GameObject.h"
 #include <sstream>
 #include <vector>
 #include <memory>

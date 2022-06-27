@@ -1,0 +1,6 @@
+type=circle
+position=0.000000,0.000000
+radius=50.000000
+type=circle
+position=300.000000,-300.000000
+radius=50.000000

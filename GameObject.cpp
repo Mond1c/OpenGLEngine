@@ -1,4 +1,4 @@
-#include "Object.h"
+#include "GameObject.h"
 #include "GameObjectParser.h"
 #include <stdexcept>
 #include <stdio.h>
@@ -251,6 +251,6 @@ void engine::Circle::StringToObject(std::stringstream& ss)
 
 std::string engine::Circle::GetString() const
 {
-    return "type=circle\nposition=" + Vector2fToString(transform_->Position)
+    return "type=circle\nposition=" + Vector2fToString(transform_->Position) + "\n"
         + "radius=" + std::to_string(ToWorldPoint(transform_->Scale).x) + "\n";
 }
