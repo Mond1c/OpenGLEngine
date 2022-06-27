@@ -7,6 +7,6 @@ namespace engine {
 		IComponent() = default;
 		virtual ~IComponent() = default;
 	public:
-		virtual void Update() const = 0;
+		virtual void Update() = 0;
 	};
 }

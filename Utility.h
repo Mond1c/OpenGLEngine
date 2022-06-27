@@ -1,10 +1,14 @@
 #pragma once
 #include "Settings.h"
-
 #include <numeric>
 #include <cmath>
 
 namespace engine {
+	template< typename Child, typename Base>
+	inline bool InstanceOf(const Base* base) {
+		return dynamic_cast<const Child*>(base) != nullptr;
+	}
+
 	template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 	struct Vector2 {
 		T x;
@@ -12,8 +16,14 @@ namespace engine {
 		Vector2() : x(0), y(0) {}
 		Vector2(T x, T y) : x(x), y(y) {}
 
-		T Magnitude() {
+		T Magnitude() const {
+			if (x == 0.0f && y == 0.0f) return 0.0f;
 			return static_cast<T>(std::sqrt(x * x + y * y));
+		}
+
+		Vector2 Normolize() const {
+			T length = Magnitude();
+			return { x / length, y / length };
 		}
 
 		static const Vector2<T> Zero;
@@ -61,17 +71,17 @@ namespace engine {
 	}
 
 	template<typename T>
-	inline Vector2<T>& operator+(const Vector2<T>& lhs, const Vector2<T>& rhs) {
+	inline Vector2<T> operator+(const Vector2<T>& lhs, const Vector2<T>& rhs) {
 		return Vector2<T>(lhs.x + rhs.x, lhs.y + rhs.y);
 	}
 
 	template<typename T>
-	inline Vector2<T>& operator-(const Vector2<T>& lhs, const Vector2<T>& rhs) {
+	inline Vector2<T> operator-(const Vector2<T>& lhs, const Vector2<T>& rhs) {
 		return Vector2<T>(lhs.x - rhs.x, lhs.y * rhs.y);
 	}
 
 	template<typename T>
-	inline Vector2<T>& operator*(const Vector2<T>& lhs, T rhs) {
+	inline Vector2<T> operator*(const Vector2<T>& lhs, T rhs) {
 		return Vector2<T>(lhs.x * rhs, lhs.y * rhs);
 	}
 
@@ -88,7 +98,7 @@ namespace engine {
 	}
 
 	template<typename T>
-	inline Vector2<T>& operator*=(Vector2<T>& lhs, const Vector2<T>& rhs) {
+	inline Vector2<T>& operator*=(Vector2<T>& lhs, T rhs) {
 		lhs.x *= rhs; lhs.y *= rhs;
 		return lhs;
 	}

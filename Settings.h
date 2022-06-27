@@ -1,7 +1,7 @@
 #pragma once
 
-#define WIDTH 800
-#define HEIGHT 800
+constexpr const int WIDTH = 800;
+constexpr const int HEIGHT = 800;
 
 //Physics
-#define GRAVITY -0.11
+constexpr const float GRAVITY = -0.11;

@@ -7,41 +7,41 @@ using namespace engine;
 #define DEFAULT_SCALE 1
 #define PI 3.1415926535897932384626433
 
-Vector2f Object::GetPosition() const {
+Vector2f GameObject::GetPosition() const {
     return transform_->Position;
 }
 
-Vector2f Object::GetSize() const {
+Vector2f GameObject::GetSize() const {
     return transform_->Scale;
 }
 
-Color Object::GetColor() const {
+Color GameObject::GetColor() const {
     return color_;
 }
 
-std::shared_ptr<Transform>& engine::Object::GetTransform()
+std::shared_ptr<Transform>& engine::GameObject::GetTransform()
 {
     return transform_;
-}
+}   
 
-void Object::SetPosition(const Vector2f& position) {
+void GameObject::SetPosition(const Vector2f& position) {
     transform_->Position = position;
 }
 
-void Object::SetScale(const Vector2f& scale) {
+void GameObject::SetScale(const Vector2f& scale) {
     transform_->Scale = scale;
 }
 
-void Object::SetColor(const Color& color) {
+void GameObject::SetColor(const Color& color) {
     color_ = color;
 }
 
-void engine::Object::AddComponent(std::shared_ptr<IComponent> component)
+void engine::GameObject::AddComponent(std::shared_ptr<IComponent> component)
 {
     components_.push_back(component);
 }
 
-void engine::Object::Update()
+void engine::GameObject::Update()
 {
     for (auto& component : components_) component->Update();
 }
