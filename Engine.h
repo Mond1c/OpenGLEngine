@@ -10,8 +10,13 @@
 
 class Engine
 {
+private:
 	std::vector<std::shared_ptr<engine::GameObject>> OBJECTS;
 	std::unique_ptr<engine::Window> window;
+	float framesPerSecond = 0;
+	float curTime;
+	float lastTime = 0;
+	float FPS = 0;
 public:
 	Engine() = default;
 	Engine(Engine&) = delete;
@@ -28,8 +33,14 @@ private:
 		window = std::make_unique<engine::Window>(width, height, title);
 	}
 
-	void LocalDraw(const std::shared_ptr<engine::GameObject>& obj) {
-		obj->Draw();
+	void CalculateFrameRate() {
+		++framesPerSecond;
+		curTime = glfwGetTime();
+		if (curTime - lastTime > 1.0f) {
+			lastTime = curTime;
+			FPS = framesPerSecond;
+			framesPerSecond = 0;
+		}
 	}
 public:
 
@@ -46,6 +57,7 @@ public:
 
 	void Loop() {
 		std::vector<std::future<void>> threads;
+		double last_time = 0;
 		while (!window->ShouldClose()) {
 			glClear(GL_COLOR_BUFFER_BIT);
 			Update();
@@ -55,6 +67,10 @@ public:
 			threads.clear();
 			Draw(threads);
 			window->SwapBuffers();
+			while (glfwGetTime() - last_time < 0.01f);
+			last_time = glfwGetTime();
+			CalculateFrameRate();
+			engine::Debug::Log(FPS);
 			glfwPollEvents();
 		}
 	}

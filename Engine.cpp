@@ -21,8 +21,8 @@ void Engine::Start()
 	auto circle2 = OBJECTS[1];
 	circle1->AddComponent(std::make_shared<components::Physics>(circle1->GetTransform(), 5.0f));
 	circle2->AddComponent(std::make_shared<components::Physics>(circle2->GetTransform(), 2.0f));
-	circle1->GetComponent<components::Physics>()->SetVelocity({ 0.05f, -0.01f });
-	circle2->GetComponent<components::Physics>()->SetVelocity({ -0.1f, 0.1f });
+	circle1->GetComponent<components::Physics>()->SetVelocity({ 1.0f, -1.0f });
+	circle2->GetComponent<components::Physics>()->SetVelocity({ -1.0f, 1.0f });
 	CreateCollider<components::colliders::Circle>(circle1);
 	CreateCollider<components::colliders::Box>(circle2);
 	file = File("test.object");
