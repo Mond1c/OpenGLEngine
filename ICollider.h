@@ -2,6 +2,7 @@
 #include "IComponent.h"
 #include "GameObject.h"
 #include "Physics.h"
+#include "Debug.h"
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -75,11 +76,31 @@ namespace engine {
                     return (dx * dx + dy * dy) <= (s1.x + s2.x) * (s1.x + s2.x);
                 }
 
+                inline bool detect_collision(const Box* obj1, const Circle* obj2) { // TODO: Not working
+                    Vector2f cp = ToWorldPoint(obj2->GetTransform().Position);
+                    Vector2f bp = ToWorldPoint(obj1->GetTransform().Position);
+                    Vector2f sp = ToWorldPoint(obj1->GetTransform().Scale);
+                    float tempX = cp.x, tempY = cp.y;
+                    if (tempX < bp.x) tempX = bp.x;
+                    else if (tempX > bp.x + sp.x) tempX = bp.x + sp.x;
+                    if (cp.y < bp.y) tempY = bp.y;
+                    else if (tempY > bp.y + sp.y) tempY = bp.y + sp.y;
+                    float distX = cp.x - tempX;
+                    float distY = cp.y - tempY;
+                    float distance = distX * distX + distY * distY;
+                    Vector2f scale = ToWorldPoint(obj2->GetTransform().Scale);
+                    return distance <= scale.x * scale.x;
+                }
+
                 inline bool DetectCollision(const ICollider* obj1, const ICollider* obj2) {
                     if (InstanceOf<Box>(obj1) && InstanceOf<Box>(obj2))
                         return detect_collision(dynamic_cast<const Box*>(obj1), dynamic_cast<const Box*>(obj2));
                     if (InstanceOf<Circle>(obj1) && InstanceOf<Circle>(obj2))
                         return detect_collision(dynamic_cast<const Circle*>(obj1), dynamic_cast<const Circle*>(obj2));
+                    if (InstanceOf<Box>(obj1) && InstanceOf<Circle>(obj2))
+                        return detect_collision(dynamic_cast<const Box*>(obj1), dynamic_cast<const Circle*>(obj2));
+                    if (InstanceOf<Circle>(obj1) && InstanceOf<Box>(obj2))
+                        return detect_collision(dynamic_cast<const Box*>(obj2), dynamic_cast<const Circle*>(obj1));
                     return false;
                 }
             }

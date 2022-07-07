@@ -6,6 +6,7 @@
 #include "ICollider.h"
 #include <memory>
 #include <vector>
+#include <future>
 
 class Engine
 {
@@ -26,21 +27,33 @@ private:
 	void CreateWindow(int width, int height, const char* title) {
 		window = std::make_unique<engine::Window>(width, height, title);
 	}
+
+	void LocalDraw(const std::shared_ptr<engine::GameObject>& obj) {
+		obj->Draw();
+	}
 public:
-	void Draw() {
+
+	void Draw(std::vector<std::future<void>>& threads) {
 		for (const auto& obj : OBJECTS) {
 			engine::Vector2f position = obj->GetPosition();
-			if (position.x <= 1 && position.x >= -1 && position.y <= 1 && position.y >= -1)
+			if (position.x <= 1 && position.x >= -1 && position.y <= 1 && position.y >= -1) {
+				threads.push_back(std::async(std::launch::async, &engine::GameObject::Draw, obj.get()));
 				obj->Draw();
+			}
 		}
+		threads.clear();
 	}
 
 	void Loop() {
+		std::vector<std::future<void>> threads;
 		while (!window->ShouldClose()) {
 			glClear(GL_COLOR_BUFFER_BIT);
 			Update();
-			for (auto& obj : OBJECTS) obj->Update();
-			Draw();
+			for (auto& obj : OBJECTS) {
+				threads.push_back(std::async(std::launch::async, &engine::GameObject::Update, obj.get()));
+			}
+			threads.clear();
+			Draw(threads);
 			window->SwapBuffers();
 			glfwPollEvents();
 		}
