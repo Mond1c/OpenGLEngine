@@ -62,12 +62,15 @@ public:
 			glClear(GL_COLOR_BUFFER_BIT);
 			Update();
 			for (auto& obj : OBJECTS) {
-				threads.push_back(std::async(std::launch::async, &engine::GameObject::Update, obj.get()));
+				threads.push_back(std::async(
+					std::launch::async,
+					&engine::GameObject::Update,
+					obj.get()));
 			}
 			threads.clear();
 			Draw(threads);
 			window->SwapBuffers();
-			while (glfwGetTime() - last_time < 0.01f);
+			//while (glfwGetTime() - last_time < 0.01f);
 			last_time = glfwGetTime();
 			CalculateFrameRate();
 			engine::Debug::Log(FPS);
