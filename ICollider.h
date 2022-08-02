@@ -14,6 +14,7 @@ namespace engine {
         protected:
             std::shared_ptr<Transform>& transform_;
             std::shared_ptr<Physics> physics_;
+            bool isCollisionDetected_ = false;
         public:
             ICollider(std::shared_ptr<GameObject>& object) :
                 transform_(object->GetTransform()), physics_(object->GetComponent<Physics>()) {}

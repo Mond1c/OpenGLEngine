@@ -5,10 +5,13 @@ void engine::components::colliders::Box::Update()
 	for (auto& collider : ALL_COLLIDERS) {
 		if (collider.get() == this) continue;
 		if (physics_ && DetectCollision(this, collider.get())) {
-			Push(collider->GetVelocity(), collider->GetMass());
+			if (isCollisionDetected_) Push(collider->GetVelocity(), collider->GetMass());
 			collider->Push(GetVelocity(), GetMass());
+			isCollisionDetected_ = true;
+			return;
 		}
 	}
+	isCollisionDetected_ = false;
 }
 
 engine::Transform engine::components::ICollider::GetTransform() const
@@ -39,8 +42,10 @@ void engine::components::colliders::Circle::Update()
 	for (auto& collider : ALL_COLLIDERS) {
 		if (collider.get() == this) continue;
 		if (physics_ && DetectCollision(this, collider.get())) {
-			Push(collider->GetVelocity(), collider->GetMass());
-			collider->Push(GetVelocity(), GetMass());
+			if (isCollisionDetected_) Push(collider->GetVelocity(), collider->GetMass());
+			isCollisionDetected_ = true;
+			return;
 		}
 	}
+	isCollisionDetected_ = false;
 }

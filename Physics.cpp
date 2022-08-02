@@ -41,4 +41,5 @@ void engine::components::Physics::Push(const Vector2f& otherSpeed, float otherMa
 	Vector2f direction = velocity_.Normolize();
 	direction *= -1.0f;
 	velocity_ = direction * new_speed;
+	Debug::Log(1233);
 }
