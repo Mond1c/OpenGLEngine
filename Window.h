@@ -1,6 +1,7 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <exception>
+#include <string>
 
 namespace engine {
 	class Window
@@ -29,6 +30,7 @@ namespace engine {
 		bool ShouldClose();
 		// In the future I will change the name to "Update" (maybe)
 		void SwapBuffers();
+		void SetTitle(const std::string& str);
 	};
 }
 

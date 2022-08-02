@@ -9,3 +9,8 @@ void engine::Window::SwapBuffers()
 {
     glfwSwapBuffers(window);
 }
+
+void engine::Window::SetTitle(const std::string& str)
+{
+    glfwSetWindowTitle(window, str.c_str());
+}

@@ -57,23 +57,40 @@ public:
 
 	void Loop() {
 		std::vector<std::future<void>> threads;
-		double last_time = 0;
+		static double limitFPS = 1.0 / 60.0;
+		double lastTime = glfwGetTime();
+		double time = lastTime;
+		double delta = 0, curTime = 0;
+		int updates = 0;
+		int frames = 0;
 		while (!window->ShouldClose()) {
+			curTime = glfwGetTime();
 			glClear(GL_COLOR_BUFFER_BIT);
-			Update();
-			for (auto& obj : OBJECTS) {
-				threads.push_back(std::async(
-					std::launch::async,
-					&engine::GameObject::Update,
-					obj.get()));
+			delta += (curTime - lastTime) / limitFPS;
+			lastTime = curTime;
+			//engine::Debug::Log(delta);
+			if (delta >= 1.0) {
+				Update();
+				for (auto& obj : OBJECTS) {
+					threads.push_back(std::async(
+						std::launch::async,
+						&engine::GameObject::Update,
+						obj.get()));
+				}
+				threads.clear();
+				--delta;
+				++updates;
 			}
-			threads.clear();
 			Draw(threads);
 			window->SwapBuffers();
-			//while (glfwGetTime() - last_time < 0.01f);
-			last_time = glfwGetTime();
-			CalculateFrameRate();
-			engine::Debug::Log(FPS);
+			frames++;
+			if (glfwGetTime() - time > 1) {
+				++time;
+				std::string str = "Updates: " + std::to_string(updates) + ", " + "Frames: " + std::to_string(frames);
+				window->SetTitle(str);
+				//engine::Debug::Log("Updates: " + std::to_string(updates) + ", " + "Frames: " + std::to_string(frames));
+				updates = frames = 0;
+			}
 			glfwPollEvents();
 		}
 	}
