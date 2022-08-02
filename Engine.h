@@ -68,7 +68,6 @@ public:
 			glClear(GL_COLOR_BUFFER_BIT);
 			delta += (curTime - lastTime) / limitFPS;
 			lastTime = curTime;
-			//engine::Debug::Log(delta);
 			if (delta >= 1.0) {
 				Update();
 				for (auto& obj : OBJECTS) {
@@ -88,7 +87,6 @@ public:
 				++time;
 				std::string str = "Updates: " + std::to_string(updates) + ", " + "Frames: " + std::to_string(frames);
 				window->SetTitle(str);
-				//engine::Debug::Log("Updates: " + std::to_string(updates) + ", " + "Frames: " + std::to_string(frames));
 				updates = frames = 0;
 			}
 			glfwPollEvents();
