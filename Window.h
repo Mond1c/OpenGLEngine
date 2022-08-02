@@ -2,9 +2,10 @@
 #include <GLFW/glfw3.h>
 #include <exception>
 #include <string>
+#include "Utility.h"
 
 namespace engine::core {
-	enum Key {
+	enum class Key {
 		Escape = GLFW_KEY_ESCAPE,
 		F1 = GLFW_KEY_F1,
 		F2 = GLFW_KEY_F2,
@@ -90,6 +91,12 @@ namespace engine::core {
 		Slash = GLFW_KEY_SLASH,
 	};
 
+	enum class Mouse {
+		Left = GLFW_MOUSE_BUTTON_LEFT,
+		Right = GLFW_MOUSE_BUTTON_RIGHT,
+		Middle = GLFW_MOUSE_BUTTON_MIDDLE
+	};
+
 	class Window
 	{
 	private:
@@ -113,12 +120,16 @@ namespace engine::core {
 		Window& operator=(Window&) = delete;
 		Window& operator=(Window&&) = delete;
 	public:
-		bool ShouldClose();
+		bool ShouldClose() const;
 		// In the future I will change the name to "Update" (maybe)
 		void SwapBuffers();
 		void SetTitle(const std::string& str);
-		bool IsKeyPressed(const Key& key);
-		bool IsKeyReleased(const Key& key);
+		bool IsKeyPressed(const Key& key) const;
+		bool IsKeyReleased(const Key& key) const;
+
+		Vector2f GetCursorPosition() const;
+		bool IsMouseButtonPressed(const Mouse& mouse) const;
+		bool IsMouseButtonReleased(const Mouse& mouse) const;
 	};
 }
 
