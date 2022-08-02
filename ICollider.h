@@ -7,26 +7,25 @@
 #include <memory>
 #include <unordered_map>
 
-namespace engine {
-    namespace components {   
-        class ICollider : public IComponent
+namespace engine::components { 
+        class ICollider : public core::IComponent
         {
         protected:
-            std::shared_ptr<Transform>& transform_;
+            std::shared_ptr<core::Transform>& transform_;
             std::shared_ptr<Physics> physics_;
             bool isCollisionDetected_ = false;
         public:
-            ICollider(std::shared_ptr<GameObject>& object) :
+            ICollider(std::shared_ptr<core::GameObject>& object) :
                 transform_(object->GetTransform()), physics_(object->GetComponent<Physics>()) {}
             virtual ~ICollider() override = default;
         public:
             virtual void Update() override = 0;
         public:
-            Transform GetTransform() const;
-            Vector2f GetVelocity() const;
+            core::Transform GetTransform() const;
+            core::Vector2f GetVelocity() const;
             float GetMass() const;
         public:
-            void Push(engine::Vector2f otherSpeed, float otherMass);
+            void Push(core::Vector2f otherSpeed, float otherMass);
         };
 
         inline std::vector<std::shared_ptr<ICollider>> ALL_COLLIDERS;
@@ -34,7 +33,7 @@ namespace engine {
         namespace colliders {
             class Box : public ICollider {
             public:
-                Box(std::shared_ptr<GameObject>& object) :
+                Box(std::shared_ptr<core::GameObject>& object) :
                     ICollider(object) {
                 }
                 ~Box() override = default;
@@ -44,7 +43,7 @@ namespace engine {
 
             class Circle : public ICollider {
             public:
-                Circle(std::shared_ptr<GameObject>& object) :
+                Circle(std::shared_ptr<core::GameObject>& object) :
                     ICollider(object) {}
                 ~Circle() override = default;
             public:
@@ -53,12 +52,12 @@ namespace engine {
 
             namespace {
                 inline bool detect_collision(const Box* obj1, const Box* obj2) {
-                    Transform t1 = obj1->GetTransform();
-                    Transform t2 = obj2->GetTransform();
-                    Vector2f s1 = t1.Scale;
-                    Vector2f s2 = t2.Scale;
-                    Vector2f p1 = t1.Position;
-                    Vector2f p2 = t2.Position;
+                    core::Transform t1 = obj1->GetTransform();
+                    core::Transform t2 = obj2->GetTransform();
+                    core::Vector2f s1 = t1.Scale;
+                    core::Vector2f s2 = t2.Scale;
+                    core::Vector2f p1 = t1.Position;
+                    core::Vector2f p2 = t2.Position;
                     return p1.x <= p2.x + s2.x &&
                         p1.x + s1.x >= p2.x &&
                         p1.y <= p2.y + s2.y &&
@@ -66,21 +65,21 @@ namespace engine {
                 }
 
                 inline bool detect_collision(const Circle* obj1, const Circle* obj2) {
-                    Transform t1 = obj1->GetTransform();
-                    Transform t2 = obj2->GetTransform();
-                    Vector2f s1 = t1.Scale;
-                    Vector2f s2 = t2.Scale;
-                    Vector2f p1 = t1.Position;
-                    Vector2f p2 = t2.Position;
+                    core::Transform t1 = obj1->GetTransform();
+                    core::Transform t2 = obj2->GetTransform();
+                    core::Vector2f s1 = t1.Scale;
+                    core::Vector2f s2 = t2.Scale;
+                    core::Vector2f p1 = t1.Position;
+                    core::Vector2f p2 = t2.Position;
                     float dx = (p1.x + s1.x) - (p2.x + s2.x);
                     float dy = (p1.y + s1.x) - (p2.y + s2.x);
                     return (dx * dx + dy * dy) <= (s1.x + s2.x) * (s1.x + s2.x);
                 }
 
                 inline bool detect_collision(const Box* obj1, const Circle* obj2) { // TODO: Not working
-                    Vector2f cp = ToWorldPoint(obj2->GetTransform().Position);
-                    Vector2f bp = ToWorldPoint(obj1->GetTransform().Position);
-                    Vector2f sp = ToWorldPoint(obj1->GetTransform().Scale);
+                    core::Vector2f cp = ToWorldPoint(obj2->GetTransform().Position);
+                    core::Vector2f bp = ToWorldPoint(obj1->GetTransform().Position);
+                    core::Vector2f sp = ToWorldPoint(obj1->GetTransform().Scale);
                     float tempX = cp.x, tempY = cp.y;
                     if (tempX < bp.x) tempX = bp.x;
                     else if (tempX > bp.x + sp.x) tempX = bp.x + sp.x;
@@ -89,7 +88,7 @@ namespace engine {
                     float distX = cp.x - tempX;
                     float distY = cp.y - tempY;
                     float distance = distX * distX + distY * distY;
-                    Vector2f scale = ToWorldPoint(obj2->GetTransform().Scale);
+                    core::Vector2f scale = ToWorldPoint(obj2->GetTransform().Scale);
                     return distance <= scale.x * scale.x;
                 }
 
@@ -106,6 +105,5 @@ namespace engine {
                 }
             }
         }
-    }
 }
 

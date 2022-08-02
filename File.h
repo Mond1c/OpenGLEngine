@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 
-namespace engine {
+namespace engine::parser {
 	class File
 	{
 	private:
@@ -29,8 +29,8 @@ namespace engine {
 			return *this;
 		}
 	public:
-		std::vector<std::shared_ptr<GameObject>> Load() const;
-		void Save(const std::vector<std::shared_ptr<GameObject>>& objects);
+		std::vector<std::shared_ptr<core::GameObject>> Load() const;
+		void Save(const std::vector<std::shared_ptr<core::GameObject>>& objects);
 	};
 }
 

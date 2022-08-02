@@ -11,10 +11,10 @@ namespace engine {
 			std::cout << obj << std::endl;
 		}
 		template<typename T>
-		static void Log(const Vector2<T>& vector) {
+		static void Log(const core::Vector2<T>& vector) {
 			std::cout << "{" << vector.x << ", " << vector.y << "}" << std::endl;
 		}
-		static void Log(const Color& color) {
+		static void Log(const core::Color& color) {
 			std::cout << "(" << color.r << ", " << color.g << ", " << color.b
 				<< ", " << color.a << ")" << std::endl;
 		}

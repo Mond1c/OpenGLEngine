@@ -4,7 +4,7 @@
 #include <string>
 #include <cmath>
 
-namespace engine {
+namespace engine::core {
 	template< typename Child, typename Base>
 	inline bool InstanceOf(const Base* base) {
 		return dynamic_cast<const Child*>(base) != nullptr;

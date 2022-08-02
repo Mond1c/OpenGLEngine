@@ -15,7 +15,7 @@ void Engine::Awake()
 
 void Engine::Start()
 {
-	File file("Object.object");
+	parser::File file("Object.object");
 	OBJECTS = file.Load();
 	auto circle1 = OBJECTS[0];
 	auto circle2 = OBJECTS[1];
@@ -25,7 +25,7 @@ void Engine::Start()
 	circle2->GetComponent<components::Physics>()->SetVelocity({ -1.0f, 1.0f });
 	CreateCollider<components::colliders::Circle>(circle1);
 	CreateCollider<components::colliders::Box>(circle2);
-	file = File("test.object");
+	file = parser::File("test.object");
 	file.Save(OBJECTS);
 }
 

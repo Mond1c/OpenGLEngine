@@ -11,8 +11,8 @@
 class Engine
 {
 private:
-	std::vector<std::shared_ptr<engine::GameObject>> OBJECTS;
-	std::unique_ptr<engine::Window> window;
+	std::vector<std::shared_ptr<engine::core::GameObject>> OBJECTS;
+	std::unique_ptr<engine::core::Window> window;
 	float framesPerSecond = 0;
 	float curTime;
 	float lastTime = 0;
@@ -30,7 +30,7 @@ public:
 	Engine& operator=(Engine&&) = delete;
 private:
 	void CreateWindow(int width, int height, const char* title) {
-		window = std::make_unique<engine::Window>(width, height, title);
+		window = std::make_unique<engine::core::Window>(width, height, title);
 	}
 
 	void CalculateFrameRate() {
@@ -46,9 +46,9 @@ public:
 
 	void Draw(std::vector<std::future<void>>& threads) {
 		for (const auto& obj : OBJECTS) {
-			engine::Vector2f position = obj->GetPosition();
+			engine::core::Vector2f position = obj->GetPosition();
 			if (position.x <= 1 && position.x >= -1 && position.y <= 1 && position.y >= -1) {
-				threads.push_back(std::async(std::launch::async, &engine::GameObject::Draw, obj.get()));
+				threads.push_back(std::async(std::launch::async, &engine::core::GameObject::Draw, obj.get()));
 				obj->Draw();
 			}
 		}
@@ -73,7 +73,7 @@ public:
 				for (auto& obj : OBJECTS) {
 					threads.push_back(std::async(
 						std::launch::async,
-						&engine::GameObject::Update,
+						&engine::core::GameObject::Update,
 						obj.get()));
 				}
 				threads.clear();
@@ -93,16 +93,16 @@ public:
 		}
 	}
 private:
-	template<typename T, typename = typename std::enable_if<std::is_base_of<engine::GameObject, T>::value>::type>
-	std::shared_ptr<engine::GameObject> CreateObject(T&& tmp) {
+	template<typename T, typename = typename std::enable_if<std::is_base_of<engine::core::GameObject, T>::value>::type>
+	std::shared_ptr<engine::core::GameObject> CreateObject(T&& tmp) {
 		std::shared_ptr<T> obj = std::make_shared<T>(std::move(tmp));
 		OBJECTS.push_back(obj);
 		return obj;
 	}
 
 	template<typename T, typename G,
-		typename = std::enable_if<std::is_base_of<components::ICollider, T>::value>::type,
-		typename = std::enable_if<std::is_base_of<GameObject, G>::value>::type>
+		typename = std::enable_if<std::is_base_of<engine::components::ICollider, T>::value>::type,
+		typename = std::enable_if<std::is_base_of<engine::core::GameObject, G>::value>::type>
 	std::shared_ptr<T> CreateCollider(std::shared_ptr<G>& object) {
 		std::shared_ptr<T> collider = std::make_shared<T>(object);
 		object->AddComponent(collider);

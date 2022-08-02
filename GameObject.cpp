@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <cmath>
 using namespace engine;
+using namespace core;
 
 #define DEFAULT_SCALE 1
 #define PI 3.1415926535897932384626433
@@ -20,7 +21,7 @@ Color GameObject::GetColor() const {
     return color_;
 }
 
-std::shared_ptr<Transform>& engine::GameObject::GetTransform()
+std::shared_ptr<Transform>& GameObject::GetTransform()
 {
     return transform_;
 }   
@@ -37,12 +38,12 @@ void GameObject::SetColor(const Color& color) {
     color_ = color;
 }
 
-void engine::GameObject::AddComponent(std::shared_ptr<IComponent> component)
+void GameObject::AddComponent(std::shared_ptr<IComponent> component)
 {
     components_.push_back(component);
 }
 
-void engine::GameObject::Update()
+void GameObject::Update()
 {
     for (auto& component : components_) component->Update();
 }
@@ -61,18 +62,18 @@ void Rectangle::Draw() const {
     glEnd();
 }
 
-void engine::Rectangle::StringToObject(std::stringstream& ss)
+void Rectangle::StringToObject(std::stringstream& ss)
 {
     std::string str;
     while (ss >> str) {
-        std::vector<std::string> elements = GameObjectParser::Split(str);
+        std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "scale") SetScale(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
     }
 }
 
-std::string engine::Rectangle::GetString() const
+std::string Rectangle::GetString() const
 {
     Vector2f scale = transform_->Scale;
     return "type=rectangle\nposition=" + Vector2fToString(transform_->Position) + "\n"
@@ -80,7 +81,7 @@ std::string engine::Rectangle::GetString() const
         + "color=" + ColorToString(color_) + "\n";
 }
 
-std::array<Vector2f, 3> engine::Triangle::GetPoints() const
+std::array<Vector2f, 3> Triangle::GetPoints() const
 {
     return points_;
 }
@@ -102,12 +103,12 @@ void Triangle::Draw() const {
     glEnd();
 }
 
-void engine::Triangle::StringToObject(std::stringstream& ss)
+void Triangle::StringToObject(std::stringstream& ss)
 {
     std::string str;
     int point = 0;
     while (ss >> str) {
-        std::vector<std::string> elements = GameObjectParser::Split(str);
+        std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "scale") SetScale(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "vertex") points_[point++] = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
@@ -115,7 +116,7 @@ void engine::Triangle::StringToObject(std::stringstream& ss)
     }
 }
 
-std::string engine::Triangle::GetString() const
+std::string Triangle::GetString() const
 {
     Vector2f scale = transform_->Scale;
     return "type=triangle\nposition=" + Vector2fToString(transform_->Position) + "\n"
@@ -140,30 +141,30 @@ void Point::Draw() const
     glEnd();
 }
 
-void engine::Point::StringToObject(std::stringstream& ss)
+void Point::StringToObject(std::stringstream& ss)
 {
     std::string str;
     while (ss >> str) {
-        std::vector<std::string> elements = GameObjectParser::Split(str);
+        std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
     }
 }
 
-std::string engine::Point::GetString() const
+std::string Point::GetString() const
 {
     Vector2f position = ToWorldPoint(transform_->Position);
     return "type=point\nposition=" + std::to_string(position.x) + "," + std::to_string(position.y) + "\n"
         + "color=" + ColorToString(color_) + "\n";
 }
 
-void engine::Line::SetScale(const Vector2f& size)
+void Line::SetScale(const Vector2f& size)
 {
     printf("You can't use this method with line (SetSize)");
     throw std::runtime_error("You can't use this method with line");
 }
 
-void engine::Line::Draw() const
+void Line::Draw() const
 {
     glBegin(GL_LINE);
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
@@ -172,12 +173,12 @@ void engine::Line::Draw() const
     glEnd();
 }
 
-void engine::Line::StringToObject(std::stringstream& ss)
+void Line::StringToObject(std::stringstream& ss)
 {
     std::string str;
     bool isItFirstPoint = true;
     while (ss >> str) {
-        std::vector<std::string> elements = GameObjectParser::Split(str);
+        std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") {
             if (isItFirstPoint) SetPosition(ParseVector2f(elements[1], elements[2]));
             else point_ = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
@@ -187,14 +188,14 @@ void engine::Line::StringToObject(std::stringstream& ss)
     }
 }
 
-std::string engine::Line::GetString() const
+std::string Line::GetString() const
 {
     return "type=line\nposition=" + Vector2fToString(transform_->Position) + "\n"
         + "position=" + Vector2fToString(point_) + "\n"
         + "color=" + ColorToString(color_) + "\n";
 }
 
-void engine::Polygon::UpdateVertices()
+void Polygon::UpdateVertices()
 {
     for (auto& vertex : vertices_) {
         vertex.x = transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x;
@@ -202,7 +203,7 @@ void engine::Polygon::UpdateVertices()
     }
 }
 
-void engine::Polygon::Draw() const
+void Polygon::Draw() const
 {
     glEnableClientState(GL_VERTEX_ARRAY);
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
@@ -211,11 +212,11 @@ void engine::Polygon::Draw() const
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void engine::Polygon::StringToObject(std::stringstream& ss)
+void Polygon::StringToObject(std::stringstream& ss)
 {
     std::string str;
     while (ss >> str) {
-        std::vector<std::string> elements = GameObjectParser::Split(str);
+        std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "scale") SetScale(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "vertex") vertices_.push_back(ToScreenPoint(ParseVector2f(elements[1], elements[2])));
@@ -223,7 +224,7 @@ void engine::Polygon::StringToObject(std::stringstream& ss)
     }
 }
 
-std::string engine::Polygon::GetString() const
+std::string Polygon::GetString() const
 {
     std::string ans = "type=polygon\nposition=" + Vector2fToString(transform_->Position) 
         + "\nscale=" + std::to_string(transform_->Scale.x) + "," + std::to_string(transform_->Scale.y);
@@ -234,7 +235,7 @@ std::string engine::Polygon::GetString() const
     return ans;
 }
 
-void engine::Circle::Draw() const
+void Circle::Draw() const
 {
     float radius = transform_->Scale.x;
     int i;
@@ -250,18 +251,18 @@ void engine::Circle::Draw() const
     glEnd();
 }
 
-void engine::Circle::StringToObject(std::stringstream& ss)
+void Circle::StringToObject(std::stringstream& ss)
 {
     std::string str;
     while (ss >> str) {
-        std::vector<std::string> elements = GameObjectParser::Split(str);
+        std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
         else if (elements[0] == "radius") SetScale(ToScreenPoint(Vector2f(std::stof(elements[1]), std::stof(elements[1]))));
         else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
     }
 }
 
-std::string engine::Circle::GetString() const
+std::string Circle::GetString() const
 {
     return "type=circle\nposition=" + Vector2fToString(transform_->Position) + "\n"
         + "radius=" + std::to_string(ToWorldPoint(transform_->Scale).x) + "\n"

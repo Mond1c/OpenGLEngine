@@ -1,26 +1,28 @@
 #include "Window.h"
+using namespace engine;
+using namespace core;
 
-bool engine::Window::ShouldClose()
+bool Window::ShouldClose()
 {
     return glfwWindowShouldClose(window_);
 }
 
-void engine::Window::SwapBuffers()
+void Window::SwapBuffers()
 {
     glfwSwapBuffers(window_);
 }
 
-void engine::Window::SetTitle(const std::string& str)
+void Window::SetTitle(const std::string& str)
 {
     glfwSetWindowTitle(window_, str.c_str());
 }
 
-bool engine::Window::IsKeyPressed(const engine::Key& key)
+bool Window::IsKeyPressed(const Key& key)
 {
     return glfwGetKey(window_, key) == GLFW_PRESS;
 }
 
-bool engine::Window::IsKeyReleased(const Key& key)
+bool Window::IsKeyReleased(const Key& key)
 {
     return glfwGetKey(window_, key) == GLFW_RELEASE;
 }

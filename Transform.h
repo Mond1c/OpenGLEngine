@@ -1,7 +1,7 @@
 #pragma once
 #include "Utility.h"
 
-namespace engine {
+namespace engine::core {
 	class Transform
 	{
 	public:

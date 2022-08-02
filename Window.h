@@ -3,7 +3,7 @@
 #include <exception>
 #include <string>
 
-namespace engine {
+namespace engine::core {
 	enum Key {
 		Escape = GLFW_KEY_ESCAPE,
 		F1 = GLFW_KEY_F1,

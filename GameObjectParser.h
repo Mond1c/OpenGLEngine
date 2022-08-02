@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-namespace engine {
+namespace engine::parser {
 	class GameObjectParser
 	{
 	public:
@@ -15,7 +15,7 @@ namespace engine {
 		GameObjectParser& operator=(const GameObjectParser&) = delete;
 		GameObjectParser& operator=(GameObjectParser&&) = delete;
 	public:
-		static std::shared_ptr<engine::GameObject> Parse(std::stringstream& stream);
+		static std::shared_ptr<core::GameObject> Parse(std::stringstream& stream);
 		static std::vector<std::string> Split(const std::string& str);
 	};
 }

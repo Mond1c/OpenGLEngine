@@ -1,6 +1,6 @@
 #pragma once
 
-namespace engine {
+namespace engine::core {
 	class IComponent
 	{
 	public:

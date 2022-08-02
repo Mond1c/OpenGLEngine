@@ -1,6 +1,8 @@
 #include "ICollider.h"
+using namespace engine;
+using namespace components;
 
-void engine::components::colliders::Box::Update()
+void colliders::Box::Update()
 {
 	for (auto& collider : ALL_COLLIDERS) {
 		if (collider.get() == this) continue;
@@ -14,30 +16,30 @@ void engine::components::colliders::Box::Update()
 	isCollisionDetected_ = false;
 }
 
-engine::Transform engine::components::ICollider::GetTransform() const
+core::Transform ICollider::GetTransform() const
 {
 	return *transform_;
 }
 
-engine::Vector2f engine::components::ICollider::GetVelocity() const
+core::Vector2f ICollider::GetVelocity() const
 {
-	if (!physics_) return Vector2f::Zero;
+	if (!physics_) return core::Vector2f::Zero;
 	return physics_->GetVelocity();
 }
 
-float engine::components::ICollider::GetMass() const
+float ICollider::GetMass() const
 {
 	if (!physics_) return 0.0f;
 	return physics_->GetMass();
 }
 
-void engine::components::ICollider::Push(engine::Vector2f otherSpeed, float otherMass)
+void ICollider::Push(core::Vector2f otherSpeed, float otherMass)
 {
 	if (!physics_) return;
 	physics_->Push(otherSpeed, otherMass);
 }
 
-void engine::components::colliders::Circle::Update()
+void colliders::Circle::Update()
 {
 	for (auto& collider : ALL_COLLIDERS) {
 		if (collider.get() == this) continue;

@@ -7,7 +7,7 @@
 #include <memory>
 #include <sstream>
 
-namespace engine {
+namespace engine::core {
 	class GameObject {
 	protected:
 		std::shared_ptr<Transform> transform_;
