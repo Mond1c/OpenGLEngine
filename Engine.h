@@ -11,12 +11,12 @@
 class Engine
 {
 private:
-	std::vector<std::shared_ptr<engine::core::GameObject>> OBJECTS;
-	std::unique_ptr<engine::core::Window> window;
-	float framesPerSecond = 0;
-	float curTime;
-	float lastTime = 0;
-	float FPS = 0;
+	static std::vector<std::shared_ptr<engine::core::GameObject>> OBJECTS;
+	static std::unique_ptr<engine::core::Window> window;
+	static float framesPerSecond;
+	static float curTime;
+	static float lastTime;
+	static float FPS;
 public:
 	Engine() = default;
 	Engine(Engine&) = delete;
@@ -29,22 +29,13 @@ public:
 	Engine& operator=(Engine&) = delete;
 	Engine& operator=(Engine&&) = delete;
 private:
-	void CreateWindow(int width, int height, const char* title) {
+	static void CreateWindow(int width, int height, const char* title) {
 		window = std::make_unique<engine::core::Window>(width, height, title);
 	}
 
-	void CalculateFrameRate() {
-		++framesPerSecond;
-		curTime = glfwGetTime();
-		if (curTime - lastTime > 1.0f) {
-			lastTime = curTime;
-			FPS = framesPerSecond;
-			framesPerSecond = 0;
-		}
-	}
 public:
 
-	void Draw(std::vector<std::future<void>>& threads) {
+	static void Draw(std::vector<std::future<void>>& threads) {
 		for (const auto& obj : OBJECTS) {
 			engine::core::Vector2f position = obj->GetPosition();
 			if (position.x <= 1 && position.x >= -1 && position.y <= 1 && position.y >= -1) {
@@ -55,7 +46,7 @@ public:
 		threads.clear();
 	}
 
-	void Loop() {
+	static void Loop() {
 		std::vector<std::future<void>> threads;
 		static double limitFPS = 1.0 / 60.0;
 		double lastTime = glfwGetTime();
@@ -92,9 +83,9 @@ public:
 			glfwPollEvents();
 		}
 	}
-private:
+public:
 	template<typename T, typename = typename std::enable_if<std::is_base_of<engine::core::GameObject, T>::value>::type>
-	std::shared_ptr<engine::core::GameObject> CreateObject(T&& tmp) {
+	static std::shared_ptr<engine::core::GameObject> CreateObject(T&& tmp) {
 		std::shared_ptr<T> obj = std::make_shared<T>(std::move(tmp));
 		OBJECTS.push_back(obj);
 		return obj;
@@ -103,15 +94,22 @@ private:
 	template<typename T, typename G,
 		typename = std::enable_if<std::is_base_of<engine::components::ICollider, T>::value>::type,
 		typename = std::enable_if<std::is_base_of<engine::core::GameObject, G>::value>::type>
-	std::shared_ptr<T> CreateCollider(std::shared_ptr<G>& object) {
+	static std::shared_ptr<T> CreateCollider(std::shared_ptr<G>& object) {
 		std::shared_ptr<T> collider = std::make_shared<T>(object);
 		object->AddComponent(collider);
 		engine::components::ALL_COLLIDERS.push_back(collider);
 		return collider;
 	}
 public:
-	void Awake();
-	void Start();
-	void Update();
+	static void Awake();
+	static void Start();
+	static void Update();
 };
 
+
+inline std::vector<std::shared_ptr<engine::core::GameObject>> Engine::OBJECTS = {};
+inline std::unique_ptr<engine::core::Window> Engine::window = nullptr;
+inline float Engine::curTime = 0;
+inline float Engine::FPS = 0;
+inline float Engine::framesPerSecond = 0;
+inline float Engine::lastTime = 0;

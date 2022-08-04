@@ -89,6 +89,9 @@
     <ClInclude Include="Engine.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

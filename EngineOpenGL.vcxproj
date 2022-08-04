@@ -164,6 +164,7 @@
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MonoBehaviour.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Transform.h" />
