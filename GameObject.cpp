@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "GameObjectParser.h"
+#include "Debug.h"
 #include <stdexcept>
 #include <stdio.h>
 #include <cmath>
@@ -197,7 +198,8 @@ std::string Line::GetString() const
 
 std::vector<Vector2f> Polygon::GetVertices() const
 {
-    std::vector<Vector2f> ans(vertices_.size());
+    std::vector<Vector2f> ans;
+    ans.reserve(vertices_.size());
     for (const auto& vertex : vertices_) {
         ans.push_back(Vector2f(transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x,
                 transform_->Position.y + vertex.y * DEFAULT_SCALE * transform_->Scale.x));

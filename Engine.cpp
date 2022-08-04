@@ -21,7 +21,16 @@ public:
 
 	void Update() override {
 		if (window->IsKeyPressed(core::Key::W)) {
-			transform->Translate(core::Vector2f(0, 0.1f));
+			transform->Translate(core::Vector2f(0, 1));
+		}
+		if (window->IsKeyPressed(core::Key::S)) {
+			transform->Translate(core::Vector2f(0, -1));
+		}
+		if (window->IsKeyPressed(core::Key::D)) {
+			transform->Translate(core::Vector2f(1, 0));
+		}
+		if (window->IsKeyPressed(core::Key::A)) {
+			transform->Translate(core::Vector2f(-1, 0));
 		}
 	}
 };
