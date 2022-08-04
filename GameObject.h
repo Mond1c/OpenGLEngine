@@ -124,16 +124,12 @@ namespace engine::core {
 	private:
 		std::vector<Vector2f> vertices_;
 	private:
-		void UpdateVertices();
+		std::vector<Vector2f> GetVertices() const;
 	public:
 		Polygon(const Vector2f& position, const Vector2f& scale, const std::vector<Vector2f>& vertices) :
-			GameObject(position, scale), vertices_(vertices) {
-			UpdateVertices();
-		}
+			GameObject(position, scale), vertices_(vertices) {}
 		Polygon(const Vector2f& position, const Vector2f& scale, const std::vector<Vector2f>& vertices, const Color& color) :
-			GameObject(position, scale, color), vertices_(vertices_) {
-			UpdateVertices();
-		}
+			GameObject(position, scale, color), vertices_(vertices_) {}
 		~Polygon() override = default;
 	public:
 		void Draw() const override;

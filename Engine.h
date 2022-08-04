@@ -11,12 +11,14 @@
 class Engine
 {
 private:
-	static std::vector<std::shared_ptr<engine::core::GameObject>> OBJECTS;
-	static std::unique_ptr<engine::core::Window> window;
-	static float framesPerSecond;
-	static float curTime;
-	static float lastTime;
-	static float FPS;
+	std::vector<std::shared_ptr<engine::core::GameObject>> OBJECTS;
+	std::shared_ptr<engine::core::Window> window;
+	float framesPerSecond;
+	float curTime;
+	float lastTime;
+	float FPS;
+	inline static const float maxUpdates = 60.0f;
+	inline static const float limitFPS = 1.0 / maxUpdates;
 public:
 	Engine() = default;
 	Engine(Engine&) = delete;
@@ -29,13 +31,33 @@ public:
 	Engine& operator=(Engine&) = delete;
 	Engine& operator=(Engine&&) = delete;
 private:
-	static void CreateWindow(int width, int height, const char* title) {
-		window = std::make_unique<engine::core::Window>(width, height, title);
+	void CreateWindow(int width, int height, const char* title) {
+		window = std::make_shared<engine::core::Window>(width, height, title);
 	}
 
 public:
 
-	static void Draw(std::vector<std::future<void>>& threads) {
+	bool IsKeyPressed(const engine::core::Key& key) {
+		return window->IsKeyPressed(key);
+	}
+
+	bool IsKeyReleased(const engine::core::Key& key) {
+		return window->IsKeyReleased(key);
+	}
+
+	engine::core::Vector2f GetCursorPosition() {
+		return window->GetCursorPosition();
+	}
+
+	bool IsMouseButtonPressed(const engine::core::Mouse& mouse) {
+		return window->IsMouseButtonPressed(mouse);
+	}
+
+	bool IsMouseButtonReleased(const engine::core::Mouse& mouse) {
+		return window->IsMouseButtonReleased(mouse);
+	}
+
+	void Draw(std::vector<std::future<void>>& threads) {
 		for (const auto& obj : OBJECTS) {
 			engine::core::Vector2f position = obj->GetPosition();
 			if (position.x <= 1 && position.x >= -1 && position.y <= 1 && position.y >= -1) {
@@ -46,9 +68,8 @@ public:
 		threads.clear();
 	}
 
-	static void Loop() {
+	void Loop() {
 		std::vector<std::future<void>> threads;
-		static double limitFPS = 1.0 / 60.0;
 		double lastTime = glfwGetTime();
 		double time = lastTime;
 		double delta = 0, curTime = 0;
@@ -68,11 +89,11 @@ public:
 						obj.get()));
 				}
 				threads.clear();
+				Draw(threads);
+				window->SwapBuffers();
 				--delta;
 				++updates;
 			}
-			Draw(threads);
-			window->SwapBuffers();
 			frames++;
 			if (glfwGetTime() - time > 1) {
 				++time;
@@ -85,7 +106,7 @@ public:
 	}
 public:
 	template<typename T, typename = typename std::enable_if<std::is_base_of<engine::core::GameObject, T>::value>::type>
-	static std::shared_ptr<engine::core::GameObject> CreateObject(T&& tmp) {
+	std::shared_ptr<engine::core::GameObject> CreateObject(T&& tmp) {
 		std::shared_ptr<T> obj = std::make_shared<T>(std::move(tmp));
 		OBJECTS.push_back(obj);
 		return obj;
@@ -94,22 +115,16 @@ public:
 	template<typename T, typename G,
 		typename = std::enable_if<std::is_base_of<engine::components::ICollider, T>::value>::type,
 		typename = std::enable_if<std::is_base_of<engine::core::GameObject, G>::value>::type>
-	static std::shared_ptr<T> CreateCollider(std::shared_ptr<G>& object) {
+	std::shared_ptr<T> CreateCollider(std::shared_ptr<G>& object) {
 		std::shared_ptr<T> collider = std::make_shared<T>(object);
 		object->AddComponent(collider);
 		engine::components::ALL_COLLIDERS.push_back(collider);
 		return collider;
 	}
 public:
-	static void Awake();
-	static void Start();
-	static void Update();
+	void Awake();
+	void Start();
+	void Update();
 };
 
 
-inline std::vector<std::shared_ptr<engine::core::GameObject>> Engine::OBJECTS = {};
-inline std::unique_ptr<engine::core::Window> Engine::window = nullptr;
-inline float Engine::curTime = 0;
-inline float Engine::FPS = 0;
-inline float Engine::framesPerSecond = 0;
-inline float Engine::lastTime = 0;

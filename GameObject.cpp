@@ -195,20 +195,23 @@ std::string Line::GetString() const
         + "color=" + ColorToString(color_) + "\n";
 }
 
-void Polygon::UpdateVertices()
+std::vector<Vector2f> Polygon::GetVertices() const
 {
-    for (auto& vertex : vertices_) {
-        vertex.x = transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x;
-        vertex.y = transform_->Position.y + vertex.y * DEFAULT_SCALE * transform_->Scale.x;
+    std::vector<Vector2f> ans(vertices_.size());
+    for (const auto& vertex : vertices_) {
+        ans.push_back(Vector2f(transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x,
+                transform_->Position.y + vertex.y * DEFAULT_SCALE * transform_->Scale.x));
     }
+    return ans;
 }
 
 void Polygon::Draw() const
 {
+    std::vector<Vector2f> vertices = GetVertices();
     glEnableClientState(GL_VERTEX_ARRAY);
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
-    glVertexPointer(2, GL_FLOAT, 0, vertices_.data());
-    glDrawArrays(GL_POLYGON, 0, vertices_.size());
+    glVertexPointer(2, GL_FLOAT, 0, vertices.data());
+    glDrawArrays(GL_POLYGON, 0, vertices.size());
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 

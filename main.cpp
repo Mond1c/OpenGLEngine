@@ -5,8 +5,9 @@ int main(void)
 {
     if (!glfwInit())
         return -1;
-    Engine::Awake();
-    Engine::Start();
-    Engine::Loop();
+    Engine engine;
+    engine.Awake();
+    engine.Start();
+    engine.Loop();
     return 0;
 }

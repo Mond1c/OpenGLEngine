@@ -4,8 +4,27 @@
 #include "ICollider.h"
 #include "Debug.h"
 #include "File.h"
+#include "GameObject.h"
+#include "MonoBehaviour.h"
 #include <memory>
 using namespace engine;
+
+class PlayerController : public core::MonoBehaviour {
+public:
+	void Start() override {
+
+	}
+public:
+	PlayerController(std::shared_ptr<core::GameObject>& obj, std::shared_ptr<core::Window>& window)
+		: MonoBehaviour(obj, window) {}
+	~PlayerController() override = default;
+
+	void Update() override {
+		if (window->IsKeyPressed(core::Key::W)) {
+			transform->Translate(core::Vector2f(0, 0.1f));
+		}
+	}
+};
 
 void Engine::Awake()
 {
@@ -27,8 +46,11 @@ void Engine::Start()
 	CreateCollider<components::colliders::Box>(circle2);
 	file = parser::File("test.object");
 	file.Save(OBJECTS);
+	
+	OBJECTS[2]->AddComponent(std::make_shared<PlayerController>(OBJECTS[2], window));
 }
 
 void Engine::Update()
 {
+
 }

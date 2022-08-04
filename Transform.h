@@ -10,6 +10,10 @@ namespace engine::core {
 	public:
 		Transform(const Vector2f& position, const Vector2f& scale) :
 			Position(ToScreenPoint(position)), Scale(scale) {}
+	public:
+		void Translate(const Vector2f& vec) {
+			Position += ToScreenPoint(vec);
+		}
 	};
 }
 

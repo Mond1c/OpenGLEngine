@@ -3,13 +3,16 @@
 
 namespace engine::core {
 	class MonoBehaviour : public IComponent {
+	protected:
+		std::shared_ptr<Transform> transform;
+		std::shared_ptr<Window>& window;
 	public:
-		MonoBehaviour() {
-			Start();
+		MonoBehaviour(std::shared_ptr<GameObject>& obj, std::shared_ptr<Window>& window) 
+			: transform(obj->GetTransform()), window(window) {
 		}
-		virtual ~MonoBehaviour() = default;
+		virtual ~MonoBehaviour() override = default;
 	public:
-		virtual void Start() const = 0;
-		virtual void Update() const = 0;
+		virtual void Start() = 0;
+		virtual void Update() = 0;
 	};
 }
