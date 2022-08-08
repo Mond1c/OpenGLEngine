@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponent.h"
+#include "Window.h"
 
 namespace engine::core {
 	class MonoBehaviour : public IComponent {

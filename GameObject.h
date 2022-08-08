@@ -33,6 +33,8 @@ namespace engine::core {
 			}
 			return nullptr;
 		}
+
+		void StartAllMonoBehaviourComponents();
 	public:
 		virtual void SetPosition(const Vector2f& position);
 		virtual void SetScale(const Vector2f& size);

@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "GameObjectParser.h"
 #include "Debug.h"
+#include "MonoBehaviour.h"
 #include <stdexcept>
 #include <stdio.h>
 #include <cmath>
@@ -26,6 +27,13 @@ std::shared_ptr<Transform>& GameObject::GetTransform()
 {
     return transform_;
 }   
+
+void engine::core::GameObject::StartAllMonoBehaviourComponents()
+{
+    for (auto& component : components_) if (InstanceOf<MonoBehaviour>(component.get())) {
+        dynamic_cast<MonoBehaviour*>(component.get())->Start();
+    }
+}
 
 void GameObject::SetPosition(const Vector2f& position) {
     transform_->Position = ToScreenPoint(position);
