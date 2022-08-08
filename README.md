@@ -9,7 +9,6 @@ Now available:
 - 2D physics
 - Init objects from file. You need to use my own language to do this
 
-
 # Language for objects
 
 Firstly, you need to indicate type of object.
