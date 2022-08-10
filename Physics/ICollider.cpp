@@ -6,9 +6,9 @@ using namespace components;
 void colliders::Box::Update() {
     for (auto &collider : ALL_COLLIDERS) {
         if (collider.get() == this) continue;
-        if (physics_ && DetectCollision(this, collider.get())) {
-            if (isCollisionDetected_) Push(collider->GetVelocity(), collider->GetMass());
-            collider->Push(GetVelocity(), GetMass());
+        if (!isCollisionDetected_ && physics_ && DetectCollision(this, collider.get())) {
+            Push(collider->GetVelocity(), collider->GetMass());
+            //collider->Push(GetVelocity(), GetMass());
             isCollisionDetected_ = true;
             return;
         }
@@ -38,8 +38,8 @@ void ICollider::Push(core::Vector2f otherSpeed, float otherMass) {
 void colliders::Circle::Update() {
     for (auto &collider : ALL_COLLIDERS) {
         if (collider.get() == this) continue;
-        if (physics_ && DetectCollision(this, collider.get())) {
-            if (isCollisionDetected_) Push(collider->GetVelocity(), collider->GetMass());
+        if (!isCollisionDetected_ && physics_ && DetectCollision(this, collider.get())) {
+            Push(collider->GetVelocity(), collider->GetMass());
             isCollisionDetected_ = true;
             return;
         }

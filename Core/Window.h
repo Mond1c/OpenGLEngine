@@ -106,7 +106,7 @@ namespace engine::core {
             window_ = glfwCreateWindow(width, height, title, NULL, NULL);
             if (!window_) {
                 glfwTerminate();
-                throw std::exception("Can't create a window");
+                throw std::exception();
             }
             glfwMakeContextCurrent(window_);
             glViewport(0.0f, 0.0f, width, height);
@@ -142,4 +142,3 @@ namespace engine::core {
         [[nodiscard]] bool IsMouseButtonReleased(const Mouse &mouse) const;
     };
 }
-

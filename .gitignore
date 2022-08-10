@@ -1,2 +1,16 @@
 .idea/
 cmake-build-debug/
+CMakeCache.txt
+CMakeFiles/
+Engine
+Makefile
+cmake_install.cmake
+glew/CMakeFiles/
+glew/cmake_install.cmake
+glew/lib
+glfw/CMakeFiles/
+glfw/cmake_uninstall.cmake
+glfw/src/glfw3.pc
+glfw/src/glfw3Config.cmake
+glfw/src/glfw3ConfigVersion.cmake
+glfw/src/libglfw3.a
