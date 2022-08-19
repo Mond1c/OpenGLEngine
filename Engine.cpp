@@ -44,7 +44,7 @@ void Engine::Awake() {
 
 
 void Engine::Start() {
-    parser::File file("Object.object");
+    parser::File file("C:\\Users\\pocht\\Desktop\\OpenGLEngine\\Object.object");
     OBJECTS = file.Load();
     auto &circle1 = OBJECTS[0];
     auto &circle2 = OBJECTS[1];

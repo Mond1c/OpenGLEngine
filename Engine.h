@@ -98,7 +98,7 @@ public:
 public:
     template<typename T, typename = typename std::enable_if<std::is_base_of<engine::core::GameObject, T>::value>::type>
     std::shared_ptr<engine::core::GameObject> CreateObject(T &&tmp) {
-        std::shared_ptr<T> obj = std::make_shared<T>(std::move(tmp));
+        std::shared_ptr<T> obj = std::make_shared<T>(std::forward<T>(tmp));
         OBJECTS.push_back(obj);
         return obj;
     }

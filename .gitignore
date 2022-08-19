@@ -14,3 +14,7 @@ glfw/src/glfw3.pc
 glfw/src/glfw3Config.cmake
 glfw/src/glfw3ConfigVersion.cmake
 glfw/src/libglfw3.a
+GameLang/
+.vs/
+build64/
+out/

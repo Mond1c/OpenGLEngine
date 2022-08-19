@@ -1,4 +1,5 @@
 #include "GameObjectParser.h"
+#include <cassert>
 
 using namespace engine;
 using namespace parser;
@@ -22,7 +23,7 @@ std::shared_ptr<core::GameObject> GameObjectParser::Parse(std::stringstream &str
     } else if (type == "polygon") {
         object = std::make_shared<core::Polygon>(core::Vector2f(), core::Vector2f(), std::vector<core::Vector2f>{});
     }
-    if (!object) return nullptr;
+    assert(object != nullptr);
     object->StringToObject(stream);
     return object;
 }
