@@ -6,33 +6,36 @@
 #include "Parser/File.h"
 #include "Core/GameObject.h"
 #include "Core/MonoBehaviour.h"
+#include "Core/Input.h"
 #include <memory>
 
 using namespace engine;
 
 class PlayerController : public core::MonoBehaviour {
+private:
+    std::shared_ptr<core::Input> input;
 public:
     void Start() override {
         Debug::Log("PlayerController is starting now");
     }
 
 public:
-    PlayerController(std::shared_ptr<core::GameObject> &obj, std::shared_ptr<core::Window> &window)
-            : MonoBehaviour(obj, window) {}
+    PlayerController(std::shared_ptr<core::GameObject> &obj, std::shared_ptr<core::Window> &w)
+            : MonoBehaviour(obj, w), input(std::make_shared<core::Input>(w)) {}
 
     ~PlayerController() override = default;
 
     void Update() override {
-        if (window->IsKeyPressed(core::Key::W)) {
+        if (input->IsKeyPressed(core::Input::Key::W)) {
             transform->Translate(core::Vector2f(0, 1));
         }
-        if (window->IsKeyPressed(core::Key::S)) {
+        if (input->IsKeyPressed(core::Input::Key::S)) {
             transform->Translate(core::Vector2f(0, -1));
         }
-        if (window->IsKeyPressed(core::Key::D)) {
+        if (input->IsKeyPressed(core::Input::Key::D)) {
             transform->Translate(core::Vector2f(1, 0));
         }
-        if (window->IsKeyPressed(core::Key::A)) {
+        if (input->IsKeyPressed(core::Input::Key::A)) {
             transform->Translate(core::Vector2f(-1, 0));
         }
     }
