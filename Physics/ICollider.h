@@ -68,10 +68,10 @@ namespace engine::components {
                 core::Vector2f s2 = t2.Scale;
                 core::Vector2f p1 = t1.Position;
                 core::Vector2f p2 = t2.Position;
-                return p1.x < p2.x + s2.x &&
-                       p1.x + s1.x > p2.x &&
-                       p1.y > p2.y - s2.y &&
-                       p1.y - s1.y < p2.y;
+                return p1.x <= p2.x + s2.x &&
+                       p1.x + s1.x >= p2.x &&
+                       p1.y >= p2.y - s2.y &&
+                       p1.y - s1.y <= p2.y;
             }
 
             inline bool detect_collision(const Circle *obj1, const Circle *obj2) {
@@ -86,7 +86,7 @@ namespace engine::components {
                 return (dx * dx + dy * dy) <= (s1.x + s2.x) * (s1.x + s2.x);
             }
 
-            inline bool detect_collision(const Box *obj1, const Circle *obj2) { // TODO: Not working
+            inline bool detect_collision(const Box *obj1, const Circle *obj2) { // TODO: Doesn't work
                 core::Vector2f cp = ToWorldPoint(obj2->GetTransform().Position);
                 core::Vector2f bp = ToWorldPoint(obj1->GetTransform().Position);
                 core::Vector2f sp = ToWorldPoint(obj1->GetTransform().Scale);
