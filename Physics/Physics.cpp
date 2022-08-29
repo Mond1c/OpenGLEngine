@@ -37,4 +37,5 @@ void Physics::Push(const core::Vector2f &otherSpeed, float otherMass) {
     core::Vector2f direction = velocity_.Normolize();
     direction *= -1.0f;
     velocity_ = direction * new_speed;
+    Debug::Log(velocity_);
 }

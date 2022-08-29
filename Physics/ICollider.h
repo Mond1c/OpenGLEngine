@@ -68,10 +68,10 @@ namespace engine::components {
                 core::Vector2f s2 = t2.Scale;
                 core::Vector2f p1 = t1.Position;
                 core::Vector2f p2 = t2.Position;
-                return p1.x <= p2.x + s2.x &&
-                       p1.x + s1.x >= p2.x &&
-                       p1.y <= p2.y + s2.y &&
-                       s1.y + p1.y >= p2.y;
+                return p1.x < p2.x + s2.x &&
+                       p1.x + s1.x > p2.x &&
+                       p1.y > p2.y - s2.y &&
+                       p1.y - s1.y < p2.y;
             }
 
             inline bool detect_collision(const Circle *obj1, const Circle *obj2) {

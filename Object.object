@@ -1,10 +1,10 @@
-type=circle
+type=rectangle
 position=0,0
-radius=50
+scale=0.1,0.1
 color=255,255,255,255
-type=circle
+type=rectangle
 position=250,-300
-radius=50
+scale=0.1,0.1
 color=255,255,255,255
 type=polygon
 position=0,0

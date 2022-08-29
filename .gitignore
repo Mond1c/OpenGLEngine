@@ -8,6 +8,7 @@ cmake_install.cmake
 glew/CMakeFiles/
 glew/cmake_install.cmake
 glew/lib
+glew/Makefile
 glfw/CMakeFiles/
 glfw/cmake_uninstall.cmake
 glfw/src/glfw3.pc

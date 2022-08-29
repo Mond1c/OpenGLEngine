@@ -47,7 +47,7 @@ void Engine::Awake() {
 
 
 void Engine::Start() {
-    parser::File file("C:\\Users\\pocht\\Desktop\\OpenGLEngine\\Object.object");
+    parser::File file("Object.object");
     OBJECTS = file.Load();
     auto &circle1 = OBJECTS[0];
     auto &circle2 = OBJECTS[1];
@@ -55,7 +55,7 @@ void Engine::Start() {
     circle2->AddComponent(std::make_shared<components::Physics>(circle2->GetTransform(), 2.0f));
     circle1->GetComponent<components::Physics>()->SetVelocity({1.0f, -1.0f});
     circle2->GetComponent<components::Physics>()->SetVelocity({-1.0f, 1.0f});
-    CreateCollider<components::colliders::Circle>(circle1);
+    CreateCollider<components::colliders::Box>(circle1);
     CreateCollider<components::colliders::Box>(circle2);
     file = parser::File("test.object");
     file.Save(OBJECTS);
@@ -65,4 +65,5 @@ void Engine::Start() {
 }
 
 void Engine::Update() {
+
 }

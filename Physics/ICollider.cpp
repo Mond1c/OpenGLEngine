@@ -8,7 +8,6 @@ void colliders::Box::Update() {
         if (collider.get() == this) continue;
         if (!isCollisionDetected_ && physics_ && DetectCollision(this, collider.get())) {
             Push(collider->GetVelocity(), collider->GetMass());
-            //collider->Push(GetVelocity(), GetMass());
             isCollisionDetected_ = true;
             return;
         }
@@ -31,7 +30,6 @@ float ICollider::GetMass() const {
 }
 
 void ICollider::Push(core::Vector2f otherSpeed, float otherMass) {
-    if (!physics_) return;
     physics_->Push(otherSpeed, otherMass);
 }
 
