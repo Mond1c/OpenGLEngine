@@ -127,4 +127,14 @@ namespace engine::core {
         lhs.y *= rhs;
         return lhs;
     }
+
+    template<typename T>
+    inline bool operator==(const Vector2<T>& lhs, const Vector2<T>& rhs) {
+        return lhs.x == rhs.x && lhs.y == rhs.y;
+    }
+
+    template<typename T>
+    inline bool operator!=(const Vector2<T>& lhs, const Vector2<T>& rhs) {
+        return lhs.x != rhs.x || lhs.y != rhs.y;
+    }
 }

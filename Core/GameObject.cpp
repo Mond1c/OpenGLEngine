@@ -1,15 +1,17 @@
 #include "GameObject.h"
 #include "../Parser/GameObjectParser.h"
 #include "Debug.h"
+#include "Settings.h"
 #include "MonoBehaviour.h"
 #include <stdexcept>
 #include <cstdio>
 #include <cmath>
+#include <cassert>
+
 
 using namespace engine;
 using namespace core;
 
-#define DEFAULT_SCALE 1
 #define PI 3.1415926535897932384626433
 
 Vector2f GameObject::GetPosition() const {
@@ -56,6 +58,8 @@ void GameObject::Update() {
 }
 
 void Rectangle::Draw() const {
+    assert(transform_->Scale.x > 0);
+    assert(transform_->Scale.y > 0);
     glBegin(GL_QUADS);
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
     glVertex2f(transform_->Position.x - DEFAULT_SCALE * transform_->Scale.x,

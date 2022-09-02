@@ -3,6 +3,7 @@
 #include "IComponent.h"
 #include "Transform.h"
 #include <memory>
+#include <cassert>
 
 namespace engine::components {
     class Physics : public core::IComponent {
@@ -12,7 +13,9 @@ namespace engine::components {
         float mass_;
         bool isGravityEnabled_ = true;
     public:
-        Physics(std::shared_ptr<core::Transform> &transform, float mass) : transform_(transform), mass_(mass) {}
+        Physics(std::shared_ptr<core::Transform> &transform, float mass) : transform_(transform), mass_(mass) {
+            assert(mass_ >= 0);
+        }
 
         ~Physics() override = default;
 

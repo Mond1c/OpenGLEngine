@@ -3,17 +3,6 @@
 using namespace engine;
 using namespace components;
 
-void colliders::Box::Update() {
-    for (auto &collider : ALL_COLLIDERS) {
-        if (collider.get() == this) continue;
-        if (!isCollisionDetected_ && physics_ && DetectCollision(this, collider.get())) {
-            Push(collider->GetVelocity(), collider->GetMass());
-            isCollisionDetected_ = true;
-            return;
-        }
-    }
-    isCollisionDetected_ = false;
-}
 
 core::Transform ICollider::GetTransform() const {
     return *transform_;
@@ -29,15 +18,11 @@ float ICollider::GetMass() const {
     return physics_->GetMass();
 }
 
-void ICollider::Push(core::Vector2f otherSpeed, float otherMass) {
-    physics_->Push(otherSpeed, otherMass);
-}
-
-void colliders::Circle::Update() {
+void ICollider::Update() {
     for (auto &collider : ALL_COLLIDERS) {
         if (collider.get() == this) continue;
         if (!isCollisionDetected_ && physics_ && DetectCollision(this, collider.get())) {
-            Push(collider->GetVelocity(), collider->GetMass());
+            physics_->Push(collider->GetVelocity(), collider->GetMass());
             isCollisionDetected_ = true;
             return;
         }

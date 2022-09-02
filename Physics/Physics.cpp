@@ -1,6 +1,7 @@
 #include "Physics.h"
 #include "Settings.h"
 #include "Debug.h"
+#include <cassert>
 
 using namespace engine;
 using namespace components;
@@ -37,5 +38,5 @@ void Physics::Push(const core::Vector2f &otherSpeed, float otherMass) {
     core::Vector2f direction = velocity_.Normolize();
     direction *= -1.0f;
     velocity_ = direction * new_speed;
-    Debug::Log(velocity_);
+    assert(velocity_ != core::Vector2f::Zero);
 }
