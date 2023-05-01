@@ -14,13 +14,17 @@ core::Vector2f ICollider::GetVelocity() const {
 }
 
 float ICollider::GetMass() const {
-    if (!physics_) return 0.0f;
+    if (!physics_) {
+        return 0.0f;
+    }
     return physics_->GetMass();
 }
 
 void ICollider::Update() {
     for (auto &collider : ALL_COLLIDERS) {
-        if (collider.get() == this) continue;
+        if (collider.get() == this) {
+            continue;
+        }
         if (!isCollisionDetected_ && physics_ && DetectCollision(this, collider.get())) {
             physics_->Push(collider->GetVelocity(), collider->GetMass());
             isCollisionDetected_ = true;

@@ -38,6 +38,8 @@ std::vector<std::string> GameObjectParser::Split(const std::string &str) {
             word.clear();
         } else word += ch;
     }
-    if (!word.empty()) words.push_back(word);
+    if (!word.empty()) {
+        words.push_back(word);
+    }
     return words;
 }

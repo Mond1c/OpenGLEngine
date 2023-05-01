@@ -7,7 +7,9 @@ using namespace engine;
 using namespace components;
 
 void Physics::Update() {
-    if (isGravityEnabled_) transform_->Position += core::ToScreenPoint(core::Vector2f(0, GRAVITY));
+    if (isGravityEnabled_) {
+        transform_->Position += core::ToScreenPoint(core::Vector2f(0, GRAVITY));
+    }
     transform_->Position += ToScreenPoint(velocity_);
 }
 

@@ -31,10 +31,11 @@ std::shared_ptr<Transform> &GameObject::GetTransform() {
 }
 
 void engine::core::GameObject::StartAllMonoBehaviourComponents() {
-    for (auto &component : components_)
+    for (auto &component: components_) {
         if (InstanceOf<MonoBehaviour>(component.get())) {
             dynamic_cast<MonoBehaviour *>(component.get())->Start();
         }
+    }
 }
 
 void GameObject::SetPosition(const Vector2f &position) {
@@ -49,12 +50,12 @@ void GameObject::SetColor(const Color &color) {
     color_ = color;
 }
 
-void GameObject::AddComponent(const std::shared_ptr<IComponent>& component) {
+void GameObject::AddComponent(const std::shared_ptr<IComponent> &component) {
     components_.push_back(component);
 }
 
 void GameObject::Update() {
-    for (auto &component : components_) component->Update();
+    for (auto &component: components_) component->Update();
 }
 
 void Rectangle::Draw() const {
@@ -77,9 +78,13 @@ void Rectangle::StringToObject(std::stringstream &ss) {
     std::string str;
     while (ss >> str) {
         std::vector<std::string> elements = parser::GameObjectParser::Split(str);
-        if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "scale") SetScale(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        if (elements[0] == "position") {
+            SetPosition(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "scale") {
+            SetScale(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "color") {
+            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        }
     }
 }
 
@@ -115,10 +120,15 @@ void Triangle::StringToObject(std::stringstream &ss) {
     int point = 0;
     while (ss >> str) {
         std::vector<std::string> elements = parser::GameObjectParser::Split(str);
-        if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "scale") SetScale(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "vertex") points_[point++] = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        if (elements[0] == "position") {
+            SetPosition(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "scale") {
+            SetScale(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "vertex") {
+            points_[point++] = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "color") {
+            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        }
     }
 }
 
@@ -148,8 +158,11 @@ void Point::StringToObject(std::stringstream &ss) {
     std::string str;
     while (ss >> str) {
         std::vector<std::string> elements = parser::GameObjectParser::Split(str);
-        if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        if (elements[0] == "position") {
+            SetPosition(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "color") {
+            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        }
     }
 }
 
@@ -178,10 +191,15 @@ void Line::StringToObject(std::stringstream &ss) {
     while (ss >> str) {
         std::vector<std::string> elements = parser::GameObjectParser::Split(str);
         if (elements[0] == "position") {
-            if (isItFirstPoint) SetPosition(ParseVector2f(elements[1], elements[2]));
-            else point_ = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
+            if (isItFirstPoint) {
+                SetPosition(ParseVector2f(elements[1], elements[2]));
+            } else {
+                point_ = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
+            }
             isItFirstPoint = false;
-        } else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        } else if (elements[0] == "color") {
+            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        }
     }
 }
 
@@ -194,9 +212,9 @@ std::string Line::GetString() const {
 std::vector<Vector2f> Polygon::GetVertices() const {
     std::vector<Vector2f> ans;
     ans.reserve(vertices_.size());
-    for (const auto &vertex : vertices_) {
-        ans.push_back(Vector2f(transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x,
-                               transform_->Position.y + vertex.y * DEFAULT_SCALE * transform_->Scale.x));
+    for (const auto &vertex: vertices_) {
+        ans.emplace_back(transform_->Position.x + vertex.x * DEFAULT_SCALE * transform_->Scale.x,
+                               transform_->Position.y + vertex.y * DEFAULT_SCALE * transform_->Scale.x);
     }
     return ans;
 }
@@ -214,17 +232,22 @@ void Polygon::StringToObject(std::stringstream &ss) {
     std::string str;
     while (ss >> str) {
         std::vector<std::string> elements = parser::GameObjectParser::Split(str);
-        if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "scale") SetScale(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "vertex") vertices_.push_back(ToScreenPoint(ParseVector2f(elements[1], elements[2])));
-        else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        if (elements[0] == "position") {
+            SetPosition(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "scale") {
+            SetScale(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "vertex") {
+            vertices_.push_back(ToScreenPoint(ParseVector2f(elements[1], elements[2])));
+        } else if (elements[0] == "color") {
+            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        }
     }
 }
 
 std::string Polygon::GetString() const {
     std::string ans = "type=polygon\nposition=" + Vector2fToString(transform_->Position)
                       + "\nscale=" + std::to_string(transform_->Scale.x) + "," + std::to_string(transform_->Scale.y);
-    for (auto vertex : vertices_) {
+    for (auto vertex: vertices_) {
         ans += "\nvertex=" + Vector2fToString(vertex);
     }
     ans += "\ncolor=" + ColorToString(color_) + "\n";
@@ -250,10 +273,13 @@ void Circle::StringToObject(std::stringstream &ss) {
     std::string str;
     while (ss >> str) {
         std::vector<std::string> elements = parser::GameObjectParser::Split(str);
-        if (elements[0] == "position") SetPosition(ParseVector2f(elements[1], elements[2]));
-        else if (elements[0] == "radius")
+        if (elements[0] == "position") {
+            SetPosition(ParseVector2f(elements[1], elements[2]));
+        } else if (elements[0] == "radius") {
             SetScale(ToScreenPoint(Vector2f(std::stof(elements[1]), std::stof(elements[1]))));
-        else if (elements[0] == "color") SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        } else if (elements[0] == "color") {
+            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+        }
     }
 }
 
