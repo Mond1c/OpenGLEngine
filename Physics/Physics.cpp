@@ -37,7 +37,7 @@ void Physics::Push(const core::Vector2f &otherSpeed, float otherMass) {
     float cur_speed = velocity_.Magnitude();
     float other_speed = otherSpeed.Magnitude();
     float new_speed = std::abs(((mass_ - otherMass) * cur_speed + 2 * otherMass * other_speed) / (mass_ + otherMass));
-    core::Vector2f direction = velocity_.Normolize();
+    core::Vector2f direction = velocity_.Normalize();
     direction *= -1.0f;
     velocity_ = direction * new_speed;
     assert(velocity_ != core::Vector2f::Zero);

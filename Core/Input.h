@@ -103,6 +103,7 @@ namespace engine::core {
     private:
         GLFWwindow* window_;
     public:
+        explicit Input(Window* window) : window_(window->GetGLFWwindow()) {}
         explicit Input(std::shared_ptr<Window>& window) : window_(window->GetGLFWwindow()) {}
     public:
         [[nodiscard]] bool IsKeyPressed(const Key &key) const {

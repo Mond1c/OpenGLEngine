@@ -1,6 +1,5 @@
 #include "GameObject.h"
 #include "../Parser/GameObjectParser.h"
-#include "Debug.h"
 #include "Settings.h"
 #include "MonoBehaviour.h"
 #include <stdexcept>
@@ -224,7 +223,7 @@ void Polygon::Draw() const {
     glEnableClientState(GL_VERTEX_ARRAY);
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
     glVertexPointer(2, GL_FLOAT, 0, vertices.data());
-    glDrawArrays(GL_POLYGON, 0, vertices.size());
+    glDrawArrays(GL_POLYGON, 0, static_cast<int>(vertices.size()));
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
@@ -262,8 +261,8 @@ void Circle::Draw() const {
     glColor4ub(color_.r, color_.g, color_.b, color_.a);
     for (i = 0; i <= triangleAmount; ++i) {
         glVertex2f(
-                transform_->Position.x + (radius * cos(i * 2 * PI / triangleAmount)),
-                transform_->Position.y + (radius * sin(i * 2 * PI / triangleAmount))
+                static_cast<GLfloat>(transform_->Position.x + (radius * cos(i * 2 * PI / triangleAmount))),
+                static_cast<GLfloat>(transform_->Position.y + (radius * sin(i * 2 * PI / triangleAmount)))
         );
     }
     glEnd();

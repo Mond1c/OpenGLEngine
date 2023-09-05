@@ -11,7 +11,7 @@ namespace engine::core {
         GLFWwindow *window_;
     public:
         Window(int width, int height, const char *title) {
-            window_ = glfwCreateWindow(width, height, title, NULL, NULL);
+            window_ = glfwCreateWindow(width, height, title, nullptr, nullptr);
             if (!window_) {
                 glfwTerminate();
                 throw std::exception();

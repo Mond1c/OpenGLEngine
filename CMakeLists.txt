@@ -3,8 +3,8 @@ project(Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(glfw)
-add_subdirectory(glew)
+find_package(OpenGL)
+find_package(glfw3 REQUIRED)
 
 include_directories(Core)
 
@@ -15,4 +15,4 @@ add_executable(Engine Core/Debug.h Engine.h Engine.cpp Parser/File.h Parser/File
 target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include)
 target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
 
-target_link_libraries(Engine glfw libglew_static)
+target_link_libraries(Engine glfw OpenGL::GL)

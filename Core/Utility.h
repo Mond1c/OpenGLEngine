@@ -4,6 +4,7 @@
 #include <numeric>
 #include <string>
 #include <cmath>
+#include <cstdint>
 
 namespace engine::core {
     template<typename Child, typename Base>
@@ -20,12 +21,12 @@ namespace engine::core {
 
         Vector2(T x, T y) : x(x), y(y) {}
 
-        T Magnitude() const {
+        [[nodiscard]] T Magnitude() const {
             if (x == 0.0f && y == 0.0f) return 0.0f;
             return static_cast<T>(std::sqrt(x * x + y * y));
         }
 
-        Vector2 Normolize() const {
+        [[nodiscard]] Vector2 Normalize() const {
             T length = Magnitude();
             return {x / length, y / length};
         }
@@ -65,7 +66,8 @@ namespace engine::core {
     inline const Color Color::Blue = Color(0, 0, 255);
 
     inline Color ParseColor(const std::string &r, const std::string &g, const std::string &b, const std::string &a) {
-        return Color(std::stoi(r), std::stoi(g), std::stoi(b), std::stoi(a));
+        return {static_cast<uint8_t>(std::stoi(r)), static_cast<uint8_t>(std::stoi(g)),
+                static_cast<uint8_t>(std::stoi(b)), static_cast<uint8_t>(std::stoi(a))};
     }
 
     inline std::string ColorToString(const Color &color) {
@@ -74,7 +76,7 @@ namespace engine::core {
     }
 
     inline Vector2f ParseVector2f(const std::string &x, const std::string &y) {
-        return Vector2f(std::stof(x), std::stof(y));
+        return {std::stof(x), std::stof(y)};
     }
 
     template<typename T>
@@ -129,12 +131,12 @@ namespace engine::core {
     }
 
     template<typename T>
-    inline bool operator==(const Vector2<T>& lhs, const Vector2<T>& rhs) {
+    inline bool operator==(const Vector2<T> &lhs, const Vector2<T> &rhs) {
         return lhs.x == rhs.x && lhs.y == rhs.y;
     }
 
     template<typename T>
-    inline bool operator!=(const Vector2<T>& lhs, const Vector2<T>& rhs) {
+    inline bool operator!=(const Vector2<T> &lhs, const Vector2<T> &rhs) {
         return lhs.x != rhs.x || lhs.y != rhs.y;
     }
 }

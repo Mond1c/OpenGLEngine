@@ -1,13 +1,14 @@
 #include "File.h"
 #include "GameObjectParser.h"
-#include <cassert>
 
 using namespace engine;
 using namespace parser;
 
 std::vector<std::shared_ptr<core::GameObject>> File::Load() const {
     std::fstream file(file_name_);
-    assert(file.is_open());
+    if (!file.is_open()) {
+        throw std::runtime_error("This file doesn't exist!");
+    }
     std::string str;
     std::string obj_info;
     std::vector<std::shared_ptr<core::GameObject>> objects;
@@ -31,7 +32,9 @@ std::vector<std::shared_ptr<core::GameObject>> File::Load() const {
 
 void File::Save(const std::vector<std::shared_ptr<core::GameObject>> &objects) {
     std::ofstream file(file_name_);
-    assert(file.is_open());
+    if (!file.is_open()) {
+        throw std::runtime_error("Can't open file for writing!");
+    }
     for (const auto &obj : objects) {
         if (!obj) continue;
         file << obj->GetString();

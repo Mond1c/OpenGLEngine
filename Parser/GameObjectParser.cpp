@@ -23,7 +23,9 @@ std::shared_ptr<core::GameObject> GameObjectParser::Parse(std::stringstream &str
     } else if (type == "polygon") {
         object = std::make_shared<core::Polygon>(core::Vector2f(), core::Vector2f(), std::vector<core::Vector2f>{});
     }
-    assert(object != nullptr);
+    if (object == nullptr) {
+        throw std::runtime_error("Failed to parse object file!");
+    }
     object->StringToObject(stream);
     return object;
 }
@@ -32,7 +34,7 @@ std::vector<std::string> GameObjectParser::Split(const std::string &str) {
     std::vector<std::string> words;
     std::string word;
 
-    for (char ch : str) {
+    for (char ch: str) {
         if (ch == ',' || ch == '=') {
             words.push_back(word);
             word.clear();
