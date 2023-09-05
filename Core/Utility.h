@@ -32,6 +32,48 @@ namespace engine::core {
         }
 
         static const Vector2<T> Zero;
+
+        Vector2 operator+=(const Vector2& other) {
+            x += other.x;
+            y += other.y;
+            return *this;
+        }
+
+        Vector2 operator-=(const Vector2& other) {
+            x -= other.x;
+            y -= other.y;
+            return *this;
+        }
+
+        Vector2 operator*=(const T& value) {
+            x *= value;
+            y *= value;
+            return *this;
+        }
+
+        friend Vector2 operator+(const Vector2& lhs, const Vector2& rhs) {
+            return Vector2(lhs) += rhs;
+        }
+
+        friend Vector2 operator-(const Vector2& lhs, const Vector2& rhs) {
+            return Vector2(lhs) -= rhs;
+        }
+
+        friend Vector2 operator*(const Vector2& lhs, const T& rhs) {
+            return Vector2(lhs) *= rhs;
+        }
+
+        friend Vector2 operator*(const T& lhs, const Vector2& rhs) {
+            return rhs * lhs;
+        }
+
+        friend bool operator==(const Vector2& lhs, const Vector2& rhs) {
+            return lhs.x == rhs.x && lhs.y == rhs.y;
+        }
+
+        friend bool operator!=(const Vector2& lhs, const Vector2& rhs) {
+            return !(lhs == rhs);
+        }
     };
 
     typedef Vector2<int> Vector2i;
@@ -57,6 +99,16 @@ namespace engine::core {
         static const Color Red;
         static const Color Green;
         static const Color Blue;
+
+        static Color Parse(const std::string& r, const std::string& g, const std::string& b, const std::string& a) {
+            return {static_cast<uint8_t>(std::stoi(r)), static_cast<uint8_t>(std::stoi(g)),
+                    static_cast<uint8_t>(std::stoi(b)), static_cast<uint8_t>(std::stoi(a))};
+        }
+
+        friend std::string to_string(const Color& color) {
+            return std::to_string(color.r) + "," + std::to_string(color.g) + ","
+                    + std::to_string(color.b) + "," + std::to_string(color.a);
+        }
     };
 
     inline const Color Color::White = Color(255, 255, 255);
@@ -64,16 +116,6 @@ namespace engine::core {
     inline const Color Color::Red = Color(255, 0, 0);
     inline const Color Color::Green = Color(0, 255, 0);
     inline const Color Color::Blue = Color(0, 0, 255);
-
-    inline Color ParseColor(const std::string &r, const std::string &g, const std::string &b, const std::string &a) {
-        return {static_cast<uint8_t>(std::stoi(r)), static_cast<uint8_t>(std::stoi(g)),
-                static_cast<uint8_t>(std::stoi(b)), static_cast<uint8_t>(std::stoi(a))};
-    }
-
-    inline std::string ColorToString(const Color &color) {
-        return std::to_string(color.r) + "," + std::to_string(color.g) + ","
-               + std::to_string(color.b) + "," + std::to_string(color.a);
-    }
 
     inline Vector2f ParseVector2f(const std::string &x, const std::string &y) {
         return {std::stof(x), std::stof(y)};
@@ -92,51 +134,5 @@ namespace engine::core {
     inline std::string Vector2fToString(const Vector2f &vec) {
         Vector2f v = ToWorldPoint(vec);
         return std::to_string(v.x) + "," + std::to_string(v.y);
-    }
-
-    template<typename T>
-    inline Vector2<T> operator+(const Vector2<T> &lhs, const Vector2<T> &rhs) {
-        return Vector2<T>(lhs.x + rhs.x, lhs.y + rhs.y);
-    }
-
-    template<typename T>
-    inline Vector2<T> operator-(const Vector2<T> &lhs, const Vector2<T> &rhs) {
-        return Vector2<T>(lhs.x - rhs.x, lhs.y * rhs.y);
-    }
-
-    template<typename T>
-    inline Vector2<T> operator*(const Vector2<T> &lhs, T rhs) {
-        return Vector2<T>(lhs.x * rhs, lhs.y * rhs);
-    }
-
-    template<typename T>
-    inline Vector2<T> &operator+=(Vector2<T> &lhs, const Vector2<T> &rhs) {
-        lhs.x += rhs.x;
-        lhs.y += rhs.y;
-        return lhs;
-    }
-
-    template<typename T>
-    inline Vector2<T> &operator-=(Vector2<T> &lhs, const Vector2<T> &rhs) {
-        lhs.x -= rhs.x;
-        lhs.y -= rhs.y;
-        return lhs;
-    }
-
-    template<typename T>
-    inline Vector2<T> &operator*=(Vector2<T> &lhs, T rhs) {
-        lhs.x *= rhs;
-        lhs.y *= rhs;
-        return lhs;
-    }
-
-    template<typename T>
-    inline bool operator==(const Vector2<T> &lhs, const Vector2<T> &rhs) {
-        return lhs.x == rhs.x && lhs.y == rhs.y;
-    }
-
-    template<typename T>
-    inline bool operator!=(const Vector2<T> &lhs, const Vector2<T> &rhs) {
-        return lhs.x != rhs.x || lhs.y != rhs.y;
     }
 }

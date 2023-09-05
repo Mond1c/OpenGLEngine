@@ -82,7 +82,7 @@ void Rectangle::StringToObject(std::stringstream &ss) {
         } else if (elements[0] == "scale") {
             SetScale(ParseVector2f(elements[1], elements[2]));
         } else if (elements[0] == "color") {
-            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+            SetColor(Color::Parse(elements[1], elements[2], elements[3], elements[4]));
         }
     }
 }
@@ -91,7 +91,7 @@ std::string Rectangle::GetString() const {
     Vector2f scale = transform_->Scale;
     return "type=rectangle\nposition=" + Vector2fToString(transform_->Position) + "\n"
            + "scale=" + std::to_string(scale.x) + "," + std::to_string(scale.y) + "\n"
-           + "color=" + ColorToString(color_) + "\n";
+           + "color=" + to_string(color_) + "\n";
 }
 
 std::array<Vector2f, 3> Triangle::GetPoints() const {
@@ -126,7 +126,7 @@ void Triangle::StringToObject(std::stringstream &ss) {
         } else if (elements[0] == "vertex") {
             points_[point++] = ToScreenPoint(ParseVector2f(elements[1], elements[2]));
         } else if (elements[0] == "color") {
-            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+            SetColor(Color::Parse(elements[1], elements[2], elements[3], elements[4]));
         }
     }
 }
@@ -138,7 +138,7 @@ std::string Triangle::GetString() const {
            + "vertex=" + Vector2fToString(points_[0]) + "\n"
            + "vertex=" + Vector2fToString(points_[1]) + "\n"
            + "vertex=" + Vector2fToString(points_[2]) + "\n"
-           + "color=" + ColorToString(color_) + "\n";
+           + "color=" + to_string(color_) + "\n";
 }
 
 void Point::SetScale(const Vector2f &scale) {
@@ -160,7 +160,7 @@ void Point::StringToObject(std::stringstream &ss) {
         if (elements[0] == "position") {
             SetPosition(ParseVector2f(elements[1], elements[2]));
         } else if (elements[0] == "color") {
-            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+            SetColor(Color::Parse(elements[1], elements[2], elements[3], elements[4]));
         }
     }
 }
@@ -168,7 +168,7 @@ void Point::StringToObject(std::stringstream &ss) {
 std::string Point::GetString() const {
     Vector2f position = ToWorldPoint(transform_->Position);
     return "type=point\nposition=" + std::to_string(position.x) + "," + std::to_string(position.y) + "\n"
-           + "color=" + ColorToString(color_) + "\n";
+           + "color=" + to_string(color_) + "\n";
 }
 
 void Line::SetScale(const Vector2f &size) {
@@ -197,7 +197,7 @@ void Line::StringToObject(std::stringstream &ss) {
             }
             isItFirstPoint = false;
         } else if (elements[0] == "color") {
-            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+            SetColor(Color::Parse(elements[1], elements[2], elements[3], elements[4]));
         }
     }
 }
@@ -205,7 +205,7 @@ void Line::StringToObject(std::stringstream &ss) {
 std::string Line::GetString() const {
     return "type=line\nposition=" + Vector2fToString(transform_->Position) + "\n"
            + "position=" + Vector2fToString(point_) + "\n"
-           + "color=" + ColorToString(color_) + "\n";
+           + "color=" + to_string(color_) + "\n";
 }
 
 std::vector<Vector2f> Polygon::GetVertices() const {
@@ -238,7 +238,7 @@ void Polygon::StringToObject(std::stringstream &ss) {
         } else if (elements[0] == "vertex") {
             vertices_.push_back(ToScreenPoint(ParseVector2f(elements[1], elements[2])));
         } else if (elements[0] == "color") {
-            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+            SetColor(Color::Parse(elements[1], elements[2], elements[3], elements[4]));
         }
     }
 }
@@ -249,7 +249,7 @@ std::string Polygon::GetString() const {
     for (auto vertex: vertices_) {
         ans += "\nvertex=" + Vector2fToString(vertex);
     }
-    ans += "\ncolor=" + ColorToString(color_) + "\n";
+    ans += "\ncolor=" + to_string(color_) + "\n";
     return ans;
 }
 
@@ -277,7 +277,7 @@ void Circle::StringToObject(std::stringstream &ss) {
         } else if (elements[0] == "radius") {
             SetScale(ToScreenPoint(Vector2f(std::stof(elements[1]), std::stof(elements[1]))));
         } else if (elements[0] == "color") {
-            SetColor(ParseColor(elements[1], elements[2], elements[3], elements[4]));
+            SetColor(Color::Parse(elements[1], elements[2], elements[3], elements[4]));
         }
     }
 }
@@ -285,5 +285,5 @@ void Circle::StringToObject(std::stringstream &ss) {
 std::string Circle::GetString() const {
     return "type=circle\nposition=" + Vector2fToString(transform_->Position) + "\n"
            + "radius=" + std::to_string(ToWorldPoint(transform_->Scale).x) + "\n"
-           + "color=" + ColorToString(color_) + "\n";
+           + "color=" + to_string(color_) + "\n";
 }
