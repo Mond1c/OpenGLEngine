@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IComponent.h"
-#include "GameObject.h"
+#include "../core/IComponent.h"
+#include "../core/GameObject.h"
 #include "Physics.h"
-#include "Debug.h"
-#include "Settings.h"
+#include "../core/Debug.h"
+#include "../core/Settings.h"
 #include <iostream>
 #include <memory>
 #include <unordered_map>

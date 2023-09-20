@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "../core/GameObject.h"
 #include <sstream>
 #include <vector>
 #include <memory>

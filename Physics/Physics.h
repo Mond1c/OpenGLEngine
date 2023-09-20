@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IComponent.h"
-#include "Transform.h"
+#include "../core/IComponent.h"
+#include "../core/Transform.h"
 #include <memory>
 #include <cassert>
 

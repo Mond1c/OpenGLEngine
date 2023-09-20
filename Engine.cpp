@@ -1,12 +1,12 @@
 #include "Engine.h"
 #include "Physics/Physics.h"
-#include "Core/Utility.h"
+#include "core/Utility.h"
 #include "Physics/ICollider.h"
-#include "Core/Debug.h"
+#include "core/Debug.h"
 #include "Parser/File.h"
-#include "Core/GameObject.h"
-#include "Core/MonoBehaviour.h"
-#include "Core/Input.h"
+#include "core/GameObject.h"
+#include "core/MonoBehaviour.h"
+#include "core/Input.h"
 #include <memory>
 
 using namespace engine;

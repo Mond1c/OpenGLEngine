@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core/Window.h"
-#include "Core/Settings.h"
-#include "Core/Utility.h"
-#include "Core/GameObject.h"
+#include "core/Window.h"
+#include "core/Settings.h"
+#include "core/Utility.h"
+#include "core/GameObject.h"
 #include "Physics/ICollider.h"
 #include <memory>
 #include <vector>

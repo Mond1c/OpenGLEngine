@@ -1,6 +1,6 @@
 #include "Physics.h"
-#include "Settings.h"
-#include "Debug.h"
+#include "../core/Settings.h"
+#include "../core/Debug.h"
 #include <cassert>
 
 using namespace engine;
